@@ -1,0 +1,60 @@
+\begin{thebibliography}{}
+
+\bibitem[\protect\citeauthoryear{Cox}{Cox}{2006}]{cox06}
+Cox, David~Roxbee (2006).
+\newblock {\em Principles of statistical inference}.
+\newblock Cambridge University Press.
+
+\bibitem[\protect\citeauthoryear{Gigerenzer}{Gigerenzer}{2004}]{gigerenzer04}
+Gigerenzer, Gerd (2004).
+\newblock Mindless statistics.
+\newblock {\em The Journal of Socio-Economics\/}~{\em 33\/}(5), 587--606.
+
+\bibitem[\protect\citeauthoryear{Goodman}{Goodman}{2008}]{goodman08}
+Goodman, S. (2008).
+\newblock A dirty dozen: twelve p-value misconceptions.
+\newblock ~{\em 45\/}(3), 135--140.
+
+\bibitem[\protect\citeauthoryear{Lydersen, Fagerland,, Laake}{Lydersen
+  et~al.}{2009}]{lydersen09}
+Lydersen, Stian, Morten~W Fagerland,, Petter Laake (2009).
+\newblock Recommended tests for association in 2 $\times$ 2 tables.
+\newblock {\em Statistics in medicine\/}~{\em 28\/}(7), 1159--1175.
+
+\bibitem[\protect\citeauthoryear{Nuzzo et~al.}{Nuzzo et~al.}{2014}]{nuzzo14}
+Nuzzo, Regina et~al. (2014).
+\newblock Statistical errors.
+\newblock {\em Nature\/}~{\em 506\/}(7487), 150--152.
+
+\bibitem[\protect\citeauthoryear{Sterne, Smith}{Sterne, Smith}{2001}]{sterne01}
+Sterne, J. A.~C., G.~D. Smith (2001).
+\newblock Sifting the evidence—what's wrong with significance tests?
+\newblock {\em Physical Therapy\/}~{\em 81\/}(8), 1464--1469.
+
+\bibitem[\protect\citeauthoryear{Sullivan, Feinn}{Sullivan,
+  Feinn}{2012}]{sullivan12}
+Sullivan, G.~M., R.~Feinn (2012).
+\newblock Using effect size-or why the p value is not enough.
+\newblock {\em Journal of graduate medical education\/}~{\em 4\/}(3), 279--282.
+
+\bibitem[\protect\citeauthoryear{Wasserstein, Lazar}{Wasserstein,
+  Lazar}{2016}]{wasserstein16}
+Wasserstein, R., L., N.~A. Lazar (2016).
+\newblock The asa's statement on p-values: context, process, and purpose.
+\newblock {\em The American Statistician\/}~{\em 70}, ??--??
+
+\bibitem[\protect\citeauthoryear{Zuur, Ieno,, Elphick}{Zuur
+  et~al.}{2010}]{zuur10}
+Zuur, Alain~F, Elena~N Ieno,, Chris~S Elphick (2010).
+\newblock A protocol for data exploration to avoid common statistical problems.
+\newblock {\em Methods in Ecology and Evolution\/}~{\em 1\/}(1), 3--14.
+
+\bibitem[\protect\citeauthoryear{Ляшевская,
+  Шаров}{Ляшевская, Шаров}{2009}]{lyashevskaya09}
+Ляшевская, О.~Н., С.~А. Шаров (2009).
+\newblock {\em Частотный словарь современного
+  русского языка (на материалах
+  Национального корпуса русского языка)}.
+\newblock Азбуковник.
+
+\end{thebibliography}

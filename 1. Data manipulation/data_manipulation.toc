@@ -1,0 +1,24 @@
+\beamer@endinputifotherversion {3.24pt}
+\select@language {russian}
+\beamer@sectionintoc {1}{об R}{2}{0}{1}
+\beamer@sectionintoc {2}{калькулятор}{7}{0}{2}
+\beamer@sectionintoc {3}{объекты}{8}{0}{3}
+\beamer@subsectionintoc {3}{1}{векторы}{9}{0}{3}
+\beamer@subsectionintoc {3}{2}{матрицы}{11}{0}{3}
+\beamer@subsectionintoc {3}{3}{многомерные матрицы}{14}{0}{3}
+\beamer@subsectionintoc {3}{4}{списки}{15}{0}{3}
+\beamer@subsectionintoc {3}{5}{датафрейм}{16}{0}{3}
+\beamer@subsectionintoc {3}{6}{факторы}{17}{0}{3}
+\beamer@subsectionintoc {3}{7}{пакеты}{18}{0}{3}
+\beamer@sectionintoc {4}{if, else, for, while}{19}{0}{4}
+\beamer@sectionintoc {5}{манипуляции}{24}{0}{5}
+\beamer@subsectionintoc {5}{1}{чтение}{24}{0}{5}
+\beamer@subsectionintoc {5}{2}{разведка}{25}{0}{5}
+\beamer@subsectionintoc {5}{3}{indexing}{26}{0}{5}
+\beamer@subsectionintoc {5}{4}{соединение}{30}{0}{5}
+\beamer@subsectionintoc {5}{5}{сортировки}{31}{0}{5}
+\beamer@subsectionintoc {5}{6}{reshaping}{35}{0}{5}
+\beamer@subsectionintoc {5}{7}{удаление NA}{36}{0}{5}
+\beamer@subsectionintoc {5}{8}{запись}{37}{0}{5}
+\beamer@subsectionintoc {5}{9}{память и время}{38}{0}{5}
+\beamer@sectionintoc {6}{функции}{39}{0}{6}

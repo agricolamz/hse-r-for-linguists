@@ -1,0 +1,844 @@
+\input{pre}
+\setbeamercolor{alerted text}{fg=yellow}
+\setbeamersize{text margin left=4mm,text margin right=1mm} 
+\setbeamertemplate{navigation symbols}{
+	\usebeamerfont{footline}%
+    \usebeamercolor[fg]{footline}%
+    \hspace{1em}%
+    {{\small презентация доступна: \href{http://1drv.ms/1PMoiZj}{\textbf{http://1drv.ms/1PMoiZj}}}
+    \hspace{40mm}
+    \insertframenumber/\inserttotalframenumber\vspace{0.5mm}}}
+% начало
+\title[]{Работа со строками в R}
+\author[]{Г. Мороз}
+\date{}
+\begin{document}
+\frame{\titlepage}
+\section{создание}
+\begin{frame}[fragile]{Как получить строку?}
+\begin{itemize}
+\mytem a <- "the quick brown fox jumps over the lazy dog"
+\mytem a <- 'the quick brown fox jumps over the lazy dog'
+\mytem a <- "the quick {\color{red!13!blue}{'brown'{}}} fox jumps over the lazy dog"
+\mytem a <- 'the quick {\color{red!13!blue}{"brown"{}}} fox jumps over the lazy dog'
+\mytem b <- {}"{}"{}
+\mytem c <- character(3) \hfill \# создает пустые строки\\
+\footnotesize
+\begin{alltt}
+[1] "" "" ""
+\end{alltt}
+\normalsize
+\mytem d <- as.character(3) \hfill \# превращает в строку\\
+\footnotesize
+\begin{alltt}
+[1] "3"
+\end{alltt}
+\normalsize
+\mytem d <- as.character(c(4:9)) \hfill \# вектор в строку\\
+\footnotesize
+\begin{alltt}
+[1] "4" "5" "6" "7" "8" "9"
+\end{alltt}
+\normalsize
+\mytem letters[3:8], LETTERS[3:8]
+\mytem data.frame(letters[3:8], letters[8:3], {\color{red!13!blue}{stringsAsFactors = F}})
+\end{itemize}
+\end{frame}
+\section{чтение}
+\begin{frame}[fragile]{Чтение файлов?}
+\begin{itemize}
+\mytem z <- read.table("a.csv", sep = "\dots") \hfill \# текст и разделители
+\mytem y <- read.csv("b.txt") \hfill \# разделитель "{},{}"
+\mytem x <- read.csv2("c.csv") \hfill \# разделитель ";"
+\mytem w <- read.delim("d.txt") \hfill \# разделитель "\textbackslash t"
+\mytem v <- readLines("e.txt") \hfill \# чтение "голого"{} текста
+\end{itemize}
+\end{frame}
+\section{манипуляции}
+\subsection{соединение}
+\begin{frame}[fragile]{Соединение строк: paste()}
+\begin{itemize}
+\mytem paste("Школа"{},  "Лингвистики")
+\footnotesize
+\begin{alltt}
+[1] "Школа Лингвистики"
+\end{alltt}
+\normalsize
+\vfill
+\mytem paste(9, 7, 8, {\color{red!13!blue}{sep = "{}-{}"{}}}) \hfill \# другой разделитель
+\footnotesize
+\begin{alltt}
+[1] "9-7-8"
+\end{alltt}
+\normalsize
+\vfill
+\mytem paste({\color{red!13!blue}{LETTERS[1:5]}}, {\color{red!27!green}{letters[1:5]}}, sep = "{}"{}) \hfill \# векторы
+\footnotesize
+\begin{alltt}
+[1] "{\color{red!13!blue}{A}}{\color{red!27!green}{a}}" "{\color{red!13!blue}{B}}{\color{red!27!green}{b}}" "{\color{red!13!blue}{C}}{\color{red!27!green}{c}}" "{\color{red!13!blue}{D}}{\color{red!27!green}{d}}" "{\color{red!13!blue}{E}}{\color{red!27!green}{e}}"
+\end{alltt}
+\normalsize
+\vfill
+\mytem paste({\color{red!13!blue}{"F"{}}}, {\color{red!27!green}{letters[1-5]}}, sep = "{}"{}) \hfill \# векторы разной длины
+\footnotesize
+\begin{alltt}
+[1] "{\color{red!13!blue}{F}}{\color{red!27!green}{a}}{}" "{\color{red!13!blue}{F}}{\color{red!27!green}{b}}{}" "{\color{red!13!blue}{F}}{\color{red!27!green}{c}}{}" "{\color{red!13!blue}{F}}{\color{red!27!green}{d}}{}" "{\color{red!13!blue}{F}}{\color{red!27!green}{e}}{}"
+\end{alltt}
+\normalsize
+\vfill
+\mytem paste({\color{red!13!blue}{"F"{}}}, letters[1-5], sep = "{}"{}, collapse = "{ }"{}) \hfill \# в один вектор
+\footnotesize
+\begin{alltt}
+[1] "{\color{red!13!blue}{F}}{\color{red!27!green}{a}} {\color{red!13!blue}{F}}{\color{red!27!green}{b}} {\color{red!13!blue}{F}}{\color{red!27!green}{c}} {\color{red!13!blue}{F}}{\color{red!27!green}{d}} {\color{red!13!blue}{F}}{\color{red!27!green}{e}}{}"
+\end{alltt}
+\normalsize
+\vfill
+\mytem paste({\color{red!13!blue}{"F"{}}}, {\color{red!27!green}{letters[1-5]}}, sep = "{}"{}, collapse = "{}-{}"{}) \hfill \# другой разделитель
+\footnotesize
+\begin{alltt}
+[1] "{\color{red!13!blue}{F}}{\color{red!27!green}{a}}-{\color{red!13!blue}{F}}{\color{red!27!green}{b}}-{\color{red!13!blue}{F}}{\color{red!27!green}{c}}-{\color{red!13!blue}{F}}{\color{red!27!green}{d}}-{\color{red!13!blue}{F}}{\color{red!27!green}{e}}{}"
+\end{alltt}
+\normalsize
+\vfill
+\mytem paste(c({\color{red!13!blue}{"F"{}}}, {\color{red!27!green}{letters[1-5]}}), collapse = "{}-{}"{}) \hfill \# развекторизовать
+\footnotesize
+\begin{alltt}
+[1] "{\color{red!13!blue}{F}}-{\color{red!27!green}{a}}-{\color{red!27!green}{b}}-{\color{red!27!green}{c}}-{\color{red!27!green}{d}}-{\color{red!27!green}{e}}{}"
+\end{alltt}
+\normalsize
+\end{itemize}
+\end{frame}
+\begin{frame}[fragile]{Соединение строк: library(stringr)}
+\begin{itemize}
+\mytem str\_c("Школа"{},  "Лингвистики")
+\footnotesize
+\begin{alltt}
+[1] "ШколаЛингвистики"
+\end{alltt}
+\normalsize
+\vfill
+\mytem str\_c("Школа"{},  "Лингвистики"{}, sep = "{ }"{}) \hfill \# разделитель
+\footnotesize
+\begin{alltt}
+[1] "Школа Лингвистики"
+\end{alltt}
+\normalsize
+\mytem str\_c({\color{red!13!blue}{LETTERS[1:5]}}, {\color{red!27!green}{letters[1:5]}}, sep = "{}"{}) \hfill \# векторы
+\footnotesize
+\begin{alltt}
+[1] "{\color{red!13!blue}{A}}{\color{red!27!green}{a}}" "{\color{red!13!blue}{B}}{\color{red!27!green}{b}}" "{\color{red!13!blue}{C}}{\color{red!27!green}{c}}" "{\color{red!13!blue}{D}}{\color{red!27!green}{d}}" "{\color{red!13!blue}{E}}{\color{red!27!green}{e}}"
+\end{alltt}
+\normalsize
+\vfill
+\mytem str\_c({\color{red!13!blue}{"F"{}}}, {\color{red!27!green}{letters[1-5]}}, sep = "{}"{}) \hfill \# векторы разной длины
+\footnotesize
+\begin{alltt}
+[1] "{\color{red!13!blue}{F}}{\color{red!27!green}{a}}{}" "{\color{red!13!blue}{F}}{\color{red!27!green}{b}}{}" "{\color{red!13!blue}{F}}{\color{red!27!green}{c}}{}" "{\color{red!13!blue}{F}}{\color{red!27!green}{d}}{}" "{\color{red!13!blue}{F}}{\color{red!27!green}{e}}{}"
+\end{alltt}
+\normalsize
+\vfill
+\mytem str\_c({\color{red!13!blue}{"F"{}}}, letters[1-5], sep = "{}"{}, collapse = "{ }"{}) \hfill \# в один вектор
+\footnotesize
+\begin{alltt}
+[1] "{\color{red!13!blue}{F}}{\color{red!27!green}{a}} {\color{red!13!blue}{F}}{\color{red!27!green}{b}} {\color{red!13!blue}{F}}{\color{red!27!green}{c}} {\color{red!13!blue}{F}}{\color{red!27!green}{d}} {\color{red!13!blue}{F}}{\color{red!27!green}{e}}{}"
+\end{alltt}
+\normalsize
+\vfill
+\mytem str\_c({\color{red!13!blue}{"F"{}}}, {\color{red!27!green}{letters[1-5]}}, sep = "{}"{}, collapse = "{}-{}"{}) \hfill \# другой разделитель
+\footnotesize
+\begin{alltt}
+[1] "{\color{red!13!blue}{F}}{\color{red!27!green}{a}}-{\color{red!13!blue}{F}}{\color{red!27!green}{b}}-{\color{red!13!blue}{F}}{\color{red!27!green}{c}}-{\color{red!13!blue}{F}}{\color{red!27!green}{d}}-{\color{red!13!blue}{F}}{\color{red!27!green}{e}}{}"
+\end{alltt}
+\normalsize
+\vfill
+\mytem str\_c(c({\color{red!13!blue}{"F"{}}}, {\color{red!27!green}{letters[1-5]}}), collapse = "{}-{}"{}) \hfill \# развекторизовать
+\footnotesize
+\begin{alltt}
+[1] "{\color{red!13!blue}{F}}-{\color{red!27!green}{a}}-{\color{red!27!green}{b}}-{\color{red!27!green}{c}}-{\color{red!27!green}{d}}-{\color{red!27!green}{e}}{}"
+\end{alltt}
+\normalsize
+\end{itemize}
+\end{frame}
+\begin{frame}[fragile]{Соединение строк: paste() vs. str\_c()}
+\begin{itemize}
+\item[paste] нативная функция
+\item[paste] paste("1"{}, "3")
+\footnotesize
+\begin{alltt}
+[1] "1 3"
+\end{alltt}
+\normalsize
+\item[paste] paste("f"{}, NULL, "{}"{}, "g"{}, sep = "{}-{}")
+\footnotesize
+\begin{alltt}
+[1] "f---g"
+\end{alltt}
+\normalsize
+\vfill
+\item[str\_c] library(stringr)
+\item[str\_c] str\_c("1"{}, "3")
+\footnotesize
+\begin{alltt}
+[1] "13"
+\end{alltt}
+\normalsize
+\item[str\_c] str\_c("f"{}, NULL, "{}"{}, "g"{}, sep = "{}-{}")
+\footnotesize
+\begin{alltt}
+[1] "f--g"
+\end{alltt}
+\normalsize
+\end{itemize}
+\end{frame}
+\subsection{количество символов}
+\begin{frame}{Количество символов}
+a <- "the quick brown fox jumps over the lazy dog"
+\begin{itemize}
+\mytem nchar(a)
+\footnotesize
+\begin{alltt}
+[1] 43
+\end{alltt}
+\normalsize
+\mytem library(stringr); str\_length(a)
+\footnotesize
+\begin{alltt}
+[1] 43
+\end{alltt}
+\normalsize
+\end{itemize}
+\vfill
+b  <-  c("the"{}, "quick"{}, "brown"{}, "fox")
+\begin{itemize}
+\mytem nchar(b)
+\footnotesize
+\begin{alltt}
+[1] 3 5 5 3
+\end{alltt}
+\normalsize
+\mytem str\_length(b)
+\footnotesize
+\begin{alltt}
+[1] 3 5 5 3
+\end{alltt}
+\normalsize
+\end{itemize}
+\vfill
+c <- c("the"{}, "quick"{}, NULL, "brown"{}, "{}"{}, "fox")
+\begin{itemize}
+\mytem nchar(c)
+\footnotesize
+\begin{alltt}
+[1] 3 5 5 0 3
+\end{alltt}
+\normalsize
+\mytem str\_length(c)
+\footnotesize
+\begin{alltt}
+[1] 3 5 5 0 3
+\end{alltt}
+\normalsize
+\end{itemize}
+\end{frame}
+\subsection{регистр букв}
+\begin{frame}{Изменение регистра}
+a <- "the QuiCk bRown fOx juMps ovEr tHe laZy dOg"
+\begin{itemize}
+\mytem tolower(a)
+\footnotesize
+\begin{alltt}
+[1] "the quick brown fox jumps over the lazy dog"
+\end{alltt}
+\normalsize
+\mytem toupper(a)
+\footnotesize
+\begin{alltt}
+[1] "THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG"
+\end{alltt}
+\normalsize
+\end{itemize}
+\vfill
+b <- "любЯ, сЪешЬ щипЦы, — взДохнёт мэр, — кайф Жгуч{}"
+\begin{itemize}
+\mytem tolower(b)
+\footnotesize
+\begin{alltt}
+[1] "любя, съешь щипцы, — вздохнёт мэр, — кайф жгуч"
+\end{alltt}
+\normalsize
+\mytem toupper(b)
+\footnotesize
+\begin{alltt}
+[1] "ЛЮБЯ, СЪЕШЬ ЩИПЦЫ, — ВЗДОХНЁТ МЭР, — КАЙФ ЖГУЧ"
+\end{alltt}
+\normalsize
+\end{itemize}
+\end{frame}
+\subsection{подстроки}
+\begin{frame}{Выделение подстроки: substr()}
+a <- "the quick brown fox"\\
+b <- c("the"{}, "quick"{}, "brown"{}, "fox"{})
+\begin{itemize}
+\mytem substr(a, 2, 3) \hfill \# второй и третий символ
+\footnotesize
+\begin{alltt}
+[1] "he"
+\end{alltt}
+\normalsize
+\vfill
+\mytem substr(b, 2, 3) \hfill \# второй и третий символ
+\footnotesize
+\begin{alltt}
+[1] "he"{ }"ui"{ }"ro"{ }"ox"
+\end{alltt}
+\normalsize
+\vfill
+\mytem substr(b, 2, 2) <- "."; b \hfill \# заменяет второй символ точкой
+\footnotesize
+\begin{alltt}
+[1] "t.e"{ }"q.ick"{ }"b.own"{ }"f.x"
+\end{alltt}
+\normalsize
+\vfill
+\mytem substr(b, 2, 2) <- c("1"{}, "2") ; b \hfill \# заменяет второй символ вектором
+\footnotesize
+\begin{alltt}
+[1] "t1e"{ }"q2ick"{ }"b1own"{ }"f2x"
+\end{alltt}
+\normalsize
+\end{itemize}
+\end{frame}
+\begin{frame}{Выделение подстроки: substring()}
+a <- "the quick brown fox"\\
+b <- c("the"{}, "quick"{}, "brown"{}, "fox"{})
+\begin{itemize}
+\mytem substring(b, 2, 3) \hfill \# второй и третий символ
+\footnotesize
+\begin{alltt}
+[1] "he"{ }"ui"{ }"ro"{ }"ox"
+\end{alltt}
+\normalsize
+\vfill
+\mytem substring(b, 2, 2) <- "."; b \hfill \# заменяет второй символ точкой
+\footnotesize
+\begin{alltt}
+[1] "t.e"{ }"q.ick"{ }"b.own"{ }"f.x"
+\end{alltt}
+\normalsize
+\vfill
+\mytem substring(b, 2, 2) <- c("1"{}, "2") ; b \hfill \# заменяет второй cимвол вектором
+\footnotesize
+\begin{alltt}
+[1] "t1e"{ }"q2ick"{ }"b1own"{ }"f2x"
+\end{alltt}
+\normalsize
+\vfill
+\mytem substring(b, 2) <- c("1"{}, "22"{}, "333") ; b \hfill \# заменяет второй cимвол вектором
+\footnotesize
+\begin{alltt}
+[1] "t1e"{ }"q22ck"{ }"b333n"{ }"f1x"
+\end{alltt}
+\normalsize
+\vfill
+\mytem substring(a, 1:19, 1:19) \hfill \# извлекает каждую букву
+\scriptsize
+\begin{alltt}
+[1] "t"{ }"h"{ }"e"{ }"{ }"{ }"q"{ }"u"{ }"i"{ }"c"{ }"k"{ }"{ }"{ }"b"{ }"r"{ }"o"{ }"w"{ }"n"{ }"{ }"{ }"f"{ }"o"{ }"x"
+\end{alltt}
+\normalsize
+\end{itemize}
+\end{frame}
+\begin{frame}{Выделение подcтроки: library(stringr)}
+a <- "the quick brown fox"\\
+b <- c("the"{}, "quick"{}, "brown"{}, "fox"{})
+\begin{itemize}
+\mytem str\_sub(b, 2, 3) \hfill \# второй и третий cимвол
+\footnotesize
+\begin{alltt}
+[1] "he"{ }"ui"{ }"ro"{ }"ox"
+\end{alltt}
+\normalsize
+\vfill
+\mytem str\_sub(b, 2, 2) <- "."; b \hfill \# заменяет второй cимвол точкой
+\footnotesize
+\begin{alltt}
+[1] "t.e"{ }"q.ick"{ }"b.own"{ }"f.x"
+\end{alltt}
+\normalsize
+\vfill
+\mytem str\_sub(b, 2, 2) <- ".;."; b \hfill \# заменяет второй cимвол другими
+\footnotesize
+\begin{alltt}
+[1] "t.;.e"{ }"q.;.ick"{ }"b.;.own"{ }"f.;.x"
+\end{alltt}
+\normalsize
+\vfill
+\mytem str\_sub(b, 2) <- c("1"{}, "2") ; b \hfill \# заменяет второй cимвол вектором
+\footnotesize
+\begin{alltt}
+[1] "t1e"{ }"q2ick"{ }"b1own"{ }"f2x"
+\end{alltt}
+\normalsize
+\vfill
+\mytem str\_sub(a, 1:19, 1:19) \hfill \# извлекает каждую букву
+\scriptsize
+\begin{alltt}
+[1] "t"{ }"h"{ }"e"{ }"{ }"{ }"q"{ }"u"{ }"i"{ }"c"{ }"k"{ }"{ }"{ }"b"{ }"r"{ }"o"{ }"w"{ }"n"{ }"{ }"{ }"f"{ }"o"{ }"x"
+\end{alltt}
+\normalsize
+\vfill
+\mytem str\_sub(b, -1, -1) \hfill \# поcледний символ
+\footnotesize
+\begin{alltt}
+[1] "e"{ }"k"{ }"n"{ }"x"
+\end{alltt}
+\normalsize
+\end{itemize}
+\end{frame}
+\begin{frame}[fragile]{Выделение подстроки: library(stringr)}
+a <- c("the quick brown fox jumps over"{})\\
+b <- c("jumps over the lazy dog"{})
+\begin{itemize}
+\vfill
+\mytem word(a, 2) \hfill \# второе слово
+\footnotesize
+\begin{alltt}
+[1] "quick"
+\end{alltt}
+\normalsize
+\vfill
+\mytem word(c(b, a), 4) \hfill \# четвертое слово каждой строки
+\footnotesize
+\begin{alltt}
+[1] "lazy"{ }"fox"
+\end{alltt}
+\normalsize
+\vfill
+\mytem word(c(b, a), -3) \hfill \# третье слово с конца каждой строки
+\footnotesize
+\begin{alltt}
+[1] "the"{ }"fox"
+\end{alltt}
+\normalsize
+\vfill
+\mytem word(c(b, a), 2, 4) \hfill \# со второго по четвертое слово каждой строки
+\footnotesize
+\begin{alltt}
+[1] "over the lazy"{ }"quick brown fox"
+\end{alltt}
+\normalsize
+\vfill
+\mytem word(c(b, a), -2, -1) \hfill \# последние два слова каждой строки
+\footnotesize
+\begin{alltt}
+[1] "lazy dog"{ }"jumps over"
+\end{alltt}
+\normalsize
+\end{itemize}
+\end{frame}
+\subsection{поиск}
+\begin{frame}[fragile]{Поиск вектора по фрагменту: grep()}
+a <- c("the quick"{}, "brown"{}, "fox"{}, "jumps"{}, "over"{})\\
+b <- c("jumps"{}, "over"{}, "the"{}, "lazy"{}, "dog"{})
+\begin{itemize}
+\vfill
+\mytem grep("the"{}, c(a, b)) \hfill номер элемента, содержащего подстроку
+\footnotesize
+\begin{alltt}
+[1] 1 8
+\end{alltt}
+\normalsize
+\vfill
+\mytem grep("the"{}, c(a, b), value = T) \hfill элемент, содержащий подстроку
+\footnotesize
+\begin{alltt}
+[1] "the quick" "the"
+\end{alltt}
+\normalsize
+\vfill
+\mytem grep("the"{}, c(a, b), invert = T) \hfill номер элемента, не содержащего подстроку
+\footnotesize
+\begin{alltt}
+[1]  2  3  4  5  6  7  9 10
+\end{alltt}
+\normalsize
+\vfill
+\mytem grep("the"{}, c(a, b), invert = T, value = T) \hfill элемент, не содержащий подстроку
+\footnotesize
+\begin{alltt}
+[1] "brown" "fox"   "jumps" "over"  "jumps" "over"  "lazy"  "dog"
+\end{alltt}
+\normalsize
+\vfill
+\mytem grepl("the"{}, c(a, b)) \hfill элемент, содержащий подстроку
+\scriptsize
+\begin{alltt}
+[1] TRUE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE
+\end{alltt}
+\normalsize
+\end{itemize}
+\end{frame}
+\begin{frame}[fragile]{Поиск вектора по фрагменту: library("stringr")}
+a <- c("the quick"{}, "brown"{}, "fox"{}, "jumps"{}, "over"{})\\
+b <- c("jumps"{}, "over"{}, "the"{}, "lazy"{}, "dog"{})
+\begin{itemize}
+\mytem str\_detect("the"{}, c(a, b)) \hfill элемент, содержащий подстроку
+\scriptsize
+\begin{alltt}
+[1] TRUE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE
+\end{alltt}
+\normalsize
+\mytem c(a,b)[str\_detect("the", c(a, b))] \hfill элемент, содержащий подстроку
+\scriptsize
+\begin{alltt}
+[1] "the" "the"
+\end{alltt}
+\normalsize
+\end{itemize}
+\end{frame}
+\subsection{замена}
+\begin{frame}[fragile]{Замена фрагмента}
+a <- c("the quick brown fox jumps over"{})\\
+b <- c("jumps over the lazy dog"{})
+\begin{itemize}
+\vfill
+\mytem sub("o"{}, "\_"{}, c(a, b)) \hfill \# одно вхождение
+\footnotesize
+\begin{alltt}
+[1] "the quick br_wn fox jumps over" "jumps _ver the lazy dog"  
+\end{alltt}
+\normalsize
+\vfill
+\mytem gsub("o"{}, "\_"{}, c(a, b)) \hfill \# все вхождения
+\footnotesize
+\begin{alltt}
+[1] "the quick br_wn f_x jumps _ver" "jumps _ver the lazy d_g"
+\end{alltt}
+\normalsize
+\vfill
+\mytem library("stringr"); str\_replace("o"{}, "\_"{}, c(a, b)) \hfill \# одно вхождение
+\footnotesize
+\begin{alltt}
+[1] "the quick br_wn fox jumps over" "jumps _ver the lazy dog" 
+\end{alltt}
+\normalsize
+\vfill
+\mytem library("stringr"); str\_replace\_all("o"{}, "\_"{}, c(a, b)) \hfill \# все вхождения
+\footnotesize
+\begin{alltt}
+[1] "the quick br\_wn f\_x jumps \_ver" "jumps \_ver the lazy d\_g"
+\end{alltt}
+\normalsize
+\end{itemize}
+\end{frame}
+\subsection{разбиение}
+\begin{frame}[fragile]{Разбиение}
+a <- c("the quick brown fox jumps over"{})\\
+b <- c("jumps over the lazy dog"{})
+\begin{itemize}
+\vfill
+\mytem strsplit(c(a,b),{ }"{ }"{}) \hfill \# возвращает список слов
+\mytem library("stringr"); str\_split(c(a,b),{ }"{ }"{}) \hfill \# возвращает список слов
+\end{itemize}
+\end{frame}
+\section{векторы строк}
+\subsection{объединение}
+\begin{frame}[fragile]{Вектор уникальных строк}
+a <- c("the"{}, {\color{red!13!blue}{"quick"{}, "brown"{}, "fox"{}}}, "jumps"{}, "over"{})\\
+b <- c("jumps"{}, "over"{}, "the"{}, {\color{red!27!green}{"lazy"{}, "dog"{}}})
+\begin{itemize}
+\mytem union(a, b)
+\footnotesize
+\begin{alltt}
+[1] "the"{ }{\color{red!13!blue}{"quick"{ }"brown"{ }"fox"{}}}{ }"jumps"{ }"over"{ }{\color{red!27!green}{"lazy"{ }"dog"{}}}  
+\end{alltt}
+\normalsize
+\end{itemize}
+\end{frame}
+\subsection{пересечение}
+\begin{frame}[fragile]{Пересечение векторов строк}
+a <- c("the"{}, {\color{red!13!blue}{"quick"{}, "brown"{}, "fox"{}}}, "jumps"{}, "over"{})\\
+b <- c("jumps"{}, "over"{}, "the"{}, {\color{red!27!green}{"lazy"{}, "dog"{}}})
+\begin{itemize}
+\mytem intersect(a, b)
+\footnotesize
+\begin{alltt}
+[1] "the"{ }"jumps"{ }"over"
+\end{alltt}
+\normalsize
+\end{itemize}
+\end{frame}
+\subsection{разность}
+\begin{frame}[fragile]{Разность векторов строк}
+a <- c("the"{}, {\color{red!13!blue}{"quick"{}, "brown"{}, "fox"{}}}, "jumps"{}, "over"{})\\
+b <- c("jumps"{}, "over"{}, "the"{}, {\color{red!27!green}{"lazy"{}, "dog"{}}})
+\begin{itemize}
+\mytem setdiff(a, b)
+\footnotesize
+\begin{alltt}
+[1] {\color{red!13!blue}{"quick"{ }"brown"{ }"fox"}}
+\end{alltt}
+\normalsize
+\end{itemize}
+\end{frame}
+\subsection{сравнение}
+\begin{frame}[fragile]{Сравнение векторов строк}
+a <- c("the"{}, {\color{red!13!blue}{"quick"{}, "brown"{}, "fox"{}}}, "jumps"{}, "over"{})\\
+b <- c("jumps"{}, "over"{}, "the"{}, {\color{red!27!green}{"lazy"{}, "dog"{}}})
+\begin{itemize}
+\mytem setequal(a, b)
+\footnotesize
+\begin{alltt}
+[1] FALSE
+\end{alltt}
+\normalsize
+\end{itemize}
+\vfill
+a <- c("the"{}, "quick"{}, "brown"{}, "fox"{}, "jumps"{}, "over"{})\\
+c <- c("brown"{}, "fox"{}, "jumps"{}, "over"{}, "the"{}, "quick"{})
+\begin{itemize}
+\mytem setequal(c, a)
+\footnotesize
+\begin{alltt}
+[1] TRUE
+\end{alltt}
+\normalsize
+\end{itemize}
+\vfill
+a <- c("the"{}, "quick"{}, "brown"{}, "fox"{}, "jumps"{}, "over"{})\\
+c <- c("brown"{}, "fox"{}, "jumps"{}, "over"{}, "the"{}, "quick"{})
+\begin{itemize}
+\mytem identical(c, a)
+\footnotesize
+\begin{alltt}
+[1] FALSE
+\end{alltt}
+\normalsize
+\end{itemize}
+\end{frame}
+\subsection{подмножество}
+\begin{frame}[fragile]{Является ли вектор подмножеством другого?}
+a <- c("the"{}, {\color{red!13!blue}{"quick"{}, "brown"{}, "fox"{}}})\\
+b <- "the"\\
+c <- "lazy"\\
+d <- "dog"
+\begin{itemize}
+\vfill
+\mytem is.element(b, a)
+\footnotesize
+\begin{alltt}
+[1] TRUE
+\end{alltt}
+\normalsize
+\vfill
+\mytem is.element(c, a)
+\footnotesize
+\begin{alltt}
+[1] FALSE
+\end{alltt}
+\normalsize
+\vfill
+\mytem is.element(c(b, c, d), a)
+\footnotesize
+\begin{alltt}
+[1] TRUE FALSE FALSE
+\end{alltt}
+\normalsize
+\end{itemize}
+\end{frame}
+\section{регулярки}
+\subsection{метасимволы}
+\begin{frame}[fragile]{Экранирование метасимволов}
+В R для экранирования метасимволов используется двойной слэш (а для экранирования слэша аж три слэша):\\
+\footnotesize
+\begin{alltt}
+\textbackslash\textbackslash{\color{red!13!blue}{.}}
+\textbackslash\textbackslash{\color{red!13!blue}{\$}}
+\textbackslash\textbackslash{\color{red!13!blue}{*}}
+\textbackslash\textbackslash{\color{red!13!blue}{+}}
+\textbackslash\textbackslash{\color{red!13!blue}{?}}
+\textbackslash\textbackslash{\color{red!13!blue}{|}}
+\textbackslash\textbackslash\textbackslash{\color{red!13!blue}{\textbackslash}}
+\textbackslash\textbackslash{\color{red!13!blue}{^}}
+\textbackslash\textbackslash{\color{red!13!blue}{[}}
+\textbackslash\textbackslash{\color{red!13!blue}{]}}
+\textbackslash\textbackslash{\color{red!13!blue}{\{}}
+\textbackslash\textbackslash{\color{red!13!blue}{\}}}
+\textbackslash\textbackslash{\color{red!13!blue}{(}}
+\textbackslash\textbackslash{\color{red!13!blue}{)}}
+\end{alltt}
+\normalsize
+\end{frame}
+\begin{frame}[fragile]{Классы знаков}
+\footnotesize
+\begin{alltt}
+\textbackslash\textbackslash{\color{red!13!blue}{d}} \hfill \# цифры
+\textbackslash\textbackslash{\color{red!13!blue}{D}} \hfill \# не цифры
+\textbackslash\textbackslash{\color{red!13!blue}{s}} \hfill \# пробел
+\textbackslash\textbackslash{\color{red!13!blue}{S}} \hfill \# не пробел
+\textbackslash\textbackslash{\color{red!13!blue}{w}} \hfill \# слово
+\textbackslash\textbackslash{\color{red!13!blue}{W}} \hfill \# не слово
+\end{alltt}
+\normalsize
+\vfill
+\begin{multicols}{2}
+\begin{itemize} 
+\mytem gsub("\textbackslash\textbackslash d"{}, "\textbackslash\textbackslash.{}"{}, "2016 год")
+\footnotesize
+\begin{alltt}
+[1] ".... год"
+\end{alltt}
+\normalsize
+\mytem gsub("\textbackslash\textbackslash D"{}, "\textbackslash\textbackslash.{}"{}, "2016 год")
+\footnotesize
+\begin{alltt}
+[1] "2016...."
+\end{alltt}
+\normalsize
+\mytem gsub("\textbackslash\textbackslash s"{}, "\textbackslash\textbackslash.{}"{}, "2016 год")
+\footnotesize
+\begin{alltt}
+[1] "2016.год"
+\end{alltt}
+\normalsize
+\columnbreak
+\mytem gsub("\textbackslash\textbackslash S"{}, "\textbackslash\textbackslash.{}"{}, "2016 год")
+\footnotesize
+\begin{alltt}
+[1] ".... ..."
+\end{alltt}
+\normalsize
+\mytem gsub("\textbackslash\textbackslash w"{}, "\textbackslash\textbackslash.{}"{}, "2016 год")
+\footnotesize
+\begin{alltt}
+[1] ".... ..."
+\end{alltt}
+\normalsize
+\mytem gsub("\textbackslash\textbackslash W"{}, "\textbackslash\textbackslash.{}"{}, "2016 год")
+\footnotesize
+\begin{alltt}
+[1] "2016.год"
+\end{alltt}
+\normalsize
+\end{itemize}
+\end{multicols}
+\end{frame}
+\subsection{наборы символов}
+\begin{frame}[fragile]{Наборы символов}
+\begin{multicols}{2}
+\begin{itemize} 
+\mytem gsub("[0-9]"{}, "\textbackslash\textbackslash.{}"{}, "2016 год")
+\footnotesize
+\begin{alltt}
+[1] ".... год"
+\end{alltt}
+\normalsize
+\vfill
+\mytem gsub("[a-z]"{}, "\textbackslash\textbackslash.{}"{}, "2016 year")
+\footnotesize
+\begin{alltt}
+[1] "2016 ....{}"
+\end{alltt}
+\normalsize
+\vfill
+\mytem gsub("[а-я]"{}, "\textbackslash\textbackslash.{}"{}, "2016 год")
+\footnotesize
+\begin{alltt}
+[1] "2016 ...{}"
+\end{alltt}
+\normalsize
+\columnbreak
+\mytem gsub("[A-Z]"{}, "\textbackslash\textbackslash.{}"{}, "2016 yEar")
+\footnotesize
+\begin{alltt}
+[1] "2016 y.ar"
+\end{alltt}
+\normalsize
+\vfill
+\mytem gsub("[А-Я]"{}, "\textbackslash\textbackslash.{}"{}, "2016 гОД")
+\footnotesize
+\begin{alltt}
+[1] "2016 г..{}"
+\end{alltt}
+\normalsize
+\vfill
+\mytem gsub("[a-zA-Z]"{}, "\textbackslash\textbackslash.{}"{}, "yEar")
+\footnotesize
+\begin{alltt}
+[1] "...{}."
+\end{alltt}
+\normalsize
+\vfill
+\mytem gsub("[\^{}а-я]"{}, "\textbackslash\textbackslash.{}"{}, "2016 год")
+\footnotesize
+\begin{alltt}
+[1] "....год"
+\end{alltt}
+\normalsize
+\end{itemize}
+\end{multicols}
+\end{frame}
+\subsection{квантификация}
+\begin{frame}[fragile]{Квантификаторы}
+a <- c("тара"{}, "коса"{}, "шоссе"{}, "касса"{}, "масса")
+\begin{itemize}
+\mytem gsub("сс{\color{red!13!blue}{?}}"{}, "\textbackslash\textbackslash."{}, a) \hfill \# ноль или один раз
+\scriptsize
+\begin{alltt}
+[1] "тара" "ко.а" "шо.е" "ка.а" "ма.а"
+\end{alltt}
+\normalsize
+\mytem gsub("сс{\color{red!13!blue}{*}}"{}, "\textbackslash\textbackslash."{}, a) \hfill \# ноль и более раз
+\scriptsize
+\begin{alltt}
+[1] "тара" "ко.а" "шо.е" "ка.а" "ма.а"
+\end{alltt}
+\normalsize
+\mytem gsub("сс{\color{red!13!blue}{+}}"{}, "\textbackslash\textbackslash."{}, a) \hfill \# один и более раз
+\scriptsize
+\begin{alltt}
+[1] "тара" "коса" "шо.е" "ка.а" "ма.а"
+\end{alltt}
+\normalsize
+\mytem gsub("а{\color{red!13!blue}{.}}а"{}, "\textbackslash\textbackslash."{}, a) \hfill \# любой символ
+\scriptsize
+\begin{alltt}
+[1] "т."    "коса"  "шоссе" "касса" "масса"
+\end{alltt}
+\normalsize
+\mytem gsub("а{\color{red!13!blue}{.*}}а"{}, "\textbackslash\textbackslash."{}, a) \hfill \# любой символ ноль и более раз
+\scriptsize
+\begin{alltt}
+[1] "т."    "коса"  "шоссе" "к." "м."
+\end{alltt}
+\normalsize
+\mytem gsub("с{\color{red!13!blue}{\{2\}}}"{}, "\textbackslash\textbackslash."{}, a) \hfill \# два раза
+\scriptsize
+\begin{alltt}
+[1] "тара"    "коса"  "шоссе" "ка.а" "ма.а"
+\end{alltt}
+\normalsize
+\mytem gsub("с{\color{red!13!blue}{\{1,\}}}"{}, "\textbackslash\textbackslash."{}, a) \hfill \# один и более раз
+\scriptsize
+\begin{alltt}
+[1] "тара"    "ко.а"  "шоссе" "ка.а" "ма.а"
+\end{alltt}
+\normalsize
+\mytem gsub("с{\color{red!13!blue}{\{1,2\}}}"{}, "\textbackslash\textbackslash."{}, a) \hfill \# от одного до двух раз
+\scriptsize
+\begin{alltt}
+[1] "тара"    "ко.а"  "шоссе" "ка.а" "ма.а"
+\end{alltt}
+\normalsize
+\end{itemize}
+\vspace{-2mm}
+{\color{red!13!blue}{Пробел}}: \scriptsize\verb*"с{1,2}"\normalsize{} — правильно, \scriptsize\verb*"с{1, 2}"\normalsize{} — неправильно.
+\end{frame}
+\section{}
+\begin{frame}
+{\huge Спасибо за внимание!\bigskip\\
+\normalsize Пишите письма\\
+agricolamz@gmail.com
+\vspace{-130pt}}
+\end{frame}
+\end{document}

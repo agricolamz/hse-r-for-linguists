@@ -1,0 +1,56 @@
+\input{pre}
+\setbeamersize{text margin left=4mm,text margin right=1mm} 
+\setbeamertemplate{navigation symbols}{
+	\usebeamerfont{footline}%
+    \usebeamercolor[fg]{footline}%
+    \hspace{1em}%
+    {{\small презентация доступна: \href{http://1drv.ms/1PMoiZj}{\textbf{http://1drv.ms/1PMoiZj}}}
+    \hspace{40mm}
+    \insertframenumber/\inserttotalframenumber\vspace{0.5mm}}}
+% начало
+\title[]{animation}
+\author[]{Г. Мороз}
+\date{}
+\begin{document}
+\frame{\titlepage}
+\begin{frame}[fragile]{animation}
+\scriptsize
+\begin{alltt}
+library(animation)
+
+plot_frame1 <- function(n) \{
+plot(n, n,
+     col = n, \hfill # цвет
+     pch = 20, \hfill  # тип
+     cex = 10 - n, \hfill  # размер
+     xlim = c(0, 10),
+     ylim = c(0, 10),
+     xlab = NA,
+     ylab = NA)
+\}
+
+saveGIF(
+# команда lapply применяет к функции значения
+# первого аргумента и возвращает некоторый список
+  lapply(1:10, function(i) \{
+    plot_frame1(i)
+  \}),
+  interval = 0.5, # время между слайдами
+  ani.width = 800,
+  ani.heigth = 600,
+  movie.name = 'myanim.gif'
+)
+\end{alltt}
+\normalsize
+\end{frame}
+
+\begin{frame}[fragile]{animation}
+\begin{figure}
+\includemovie[
+  poster,
+  text={\small(myanim1.gif)}
+]{6cm}{6cm}{myanim1.gif}
+\end{figure}
+\end{frame}
+
+\end{document}

@@ -1,0 +1,967 @@
+\input{pre}
+\setbeamersize{text margin left=4mm,text margin right=1mm} 
+\setbeamertemplate{navigation symbols}{
+	\usebeamerfont{footline}%
+    \usebeamercolor[fg]{footline}%
+    \hspace{1em}%
+    {{\small презентация доступна: \href{http://1drv.ms/1TDPR6m}{\textbf{http://1drv.ms/1TDPR6m}}}
+    \hspace{38mm}
+    \insertframenumber/\inserttotalframenumber\vspace{0.5mm}}}
+% начало
+\title[]{Типы объектов в R и манипуляция с ними}
+\author[]{Г. Мороз}
+\date{}
+\begin{document}
+\frame{\titlepage}
+\section{об R}
+\begin{frame}{Что  такое R?}
+\begin{itemize}
+\mytem среда для статистического анализа, обработки и визуализации данных
+\item[\texttt{\symbol{"1F63C}}] язык программирования \pause (хотя многие скептичны\dots)
+\end{itemize}
+\begin{itemize}
+\mytem \href{http://www.r-project.org/}{{\color{red!13!blue}{скачать R}}}
+\mytem \href{http://www.rstudio.com/}{{\color{red!13!blue}{скачать RStudio}}}
+\mytem для любителей командной строки есть \href{http://dirk.eddelbuettel.com/code/littler.html}{{\color{red!13!blue}{\verb"littler"}}}
+\mytem \href{http://sourceforge.net/projects/npptor/}{{\color{red!13!blue}{R in Notepad ++}}}, \href{http://manuals.bioinformatics.ucr.edu/home/programming-in-r/vim-r}{{\color{red!13!blue}{Vim-R-Tmux}}}, \href{https://rkward.kde.org/}{{\color{red!13!blue}{RKWard}}}\dots
+\end{itemize}
+\pause Не обязательно в R:\\
+\begin{itemize}
+\mytem \href{http://www.mathworks.com/products/matlab/}{\includegraphics[height=2ex]{matlab.jpg}~Matlab}
+\mytem \href{https://www.gnu.org/software/octave/}{\includegraphics[height=2.7ex]{octave.png}~Octave}
+\mytem \href{http://www.statsoft.ru/}{\includegraphics[height=2.3ex]{statistica.jpg}~STATISTICA} (\href{http://www.statosphere.ru/home.html}{{\color{red!13!blue}{и русский блог об этой программе}}})
+\mytem \href{http://www-01.ibm.com/software/analytics/spss/}{\includegraphics[height=2ex]{spss.jpg}~SPSS}
+\mytem \href{http://juliastats.github.io/}{\includegraphics[height=2.7ex]{julia.png}~Julia}
+\mytem и др.
+\end{itemize}
+\end{frame}
+\begin{frame}{Преимущества R}
+\begin{itemize}
+\mytem бесплатный
+\mytem с открытым исходным кодом
+\mytem идет под многими операционными системами
+\mytem с кучей пакетов (< 6500), к которым написан хэлп с примерами
+\mytem реализована вся статистика, визуализация и обработка данных
+\mytem понимает уйму форматов
+\mytem пишет во множество форматов
+\mytem можно проиллюстрировать все свои манипуляции с данными в R Markdown
+\mytem большое комьюнити $\Rightarrow$ быстро ответят на вопрос, на многое уже отвечено, много книжек
+\end{itemize}
+\end{frame}
+\begin{frame}{Недостатки}
+\begin{itemize}
+\mytem руководство не всегда на высшем уровне
+\mytem во многих функциях не уделяется большое внимание расходу памяти
+\mytem работа с некоторыми типами данных хуже (например с символами)
+\end{itemize}
+\vfill
+Посмотрите статью \href{http://blog.dominodatalab.com/comparing-python-and-r-for-data-science/}{{\color{red!13!blue}{Comparing Python and R for Data Science}}}
+\end{frame}
+\section{калькулятор}
+\begin{frame}[fragile]{Калькулятор}
+\footnotesize
+\verb"(4+1)*7+9-4" \hfill \# $(4+1)\times 7+9-4$ \\ \vfill
+\verb"57 %% 43" \hfill \# остаток от деления \\ \vfill
+\verb"(35+7)/-Inf" \hfill \# {\large $\frac{35+7}{-\infty}$} \\ \vfill
+\verb"2^2^3" или \verb"2**2**3" \hfill \# $2^{2^3}$ \\ \vfill
+\verb"abs(-5)" \hfill \# $|-5|$ \\ \vfill
+\verb"log(100, 10)" \hfill \# log$_{10}(100)$ \\ \vfill
+\verb"log2(64)", \verb"log10(100)" \hfill \# log$_2(64)$, log$_{10}(100)$\\ \vfill
+\verb"sum(1:6, 7, 10:8)" \hfill \# $\sum\limits_{n=1}^{10}  n$\\ \vfill
+\verb"prod(1:6, 7, 10:8)" \hfill \# $\prod\limits_{n=1}^{10}  n$\\ \vfill
+\verb"factorial(8)" \hfill \# $8!$\\ \vfill
+\verb"choose(7, 3)" \hfill \# {\large $3 \choose 7$}\\
+\end{frame}
+\section{объекты}
+\begin{frame}{Атомарные и базовые объекты}
+\begin{itemize}
+\mytem атомарные объекты
+\begin{itemize}
+\mytem numeric — число \hfill по умолчанию
+\mytem integer — целое число \hfill  5L
+\mytem complex  — комплексное число \hfill 7+2i
+\mytem character  — символ
+\mytem logical (TRUE, FALSE) — логический оператор
+\mytem NA (not available) — пропущенное значение
+\mytem NULL
+\mytem NaN (not a number)
+\end{itemize}
+\mytem базовые объекты
+\begin{itemize}
+\mytem vector — вектор \hfill{\color{red!13!blue}{объекты только одного класса}}
+\mytem matrix — вектор с двумя измерениями (матрица)
+\mytem array — вектор с двумя и более измерений (многомер. матрица)
+\mytem list — список \hfill{\color{red!13!blue}{может содержать объекты разного класса}}
+\mytem dataframe — датафрейм
+\end{itemize}
+\mytem комментирование
+\begin{itemize}
+\mytem \footnotesize\verb"\#"\normalsize
+\mytem В RStudio \beamerbutton{Ctrl} + \beamerbutton{Shift} + \beamerbutton{C} или \beamerbutton{Command} + \beamerbutton{Shift} + \beamerbutton{C}
+\end{itemize}
+\end{itemize}
+\end{frame}
+\subsection{векторы}
+\begin{frame}[fragile]{Векторы: базовое}
+\footnotesize 
+\begin{alltt}
+a <- 3 \hfill #\beamerbutton{Alt} + \beamerbutton{-}\medskip
+a \hfill # смотрим значение переменной\medskip
+a + 1\medskip
+a \hfill  # значение не изменилось\medskip
+a + 3 -> a\medskip
+a\medskip
+b <- "ку-ку"\medskip
+c <- 1:6\medskip
+d <- c(1:3, 2, 2, 3)\medskip
+e <- c(100:1)*2\medskip
+f <- pi\medskip
+g <- c(Маша = 1, Ваня = 2, Саша = 2, Аня = 2) \hfill # вектор с именами
+\end{alltt}
+\end{frame}
+\begin{frame}[fragile]{Векторы: последовательности, генераторы чисел}
+Фрагменты арифметических последовательностей можно создавать при помощи функции \footnotesize\verb"seq()"\normalsize \\
+\footnotesize 
+\begin{alltt}
+3:23 \hfill {\color{red!13!blue}{seq(3, 23)}}
+(3:23)*3\hfill seq(9, 69, {\color{red!13!blue}{by = 3}})\hfill seq(9, 69, {\color{red!13!blue}{3}})\hfill \# от 9 до 69 по 3
+seq(3, 2, {\color{red!13!blue}{length=100}}) \hfill \# сто элементов от 3 до 2
+\end{alltt}
+\normalsize
+\vfill
+Можно создавать векторы из повторяющихся элементов:
+\footnotesize 
+\begin{alltt}
+rep(5, 2) \hfill \# 2 раза 5
+rep(33:22, 4) \hfill \# 4 раза 33:22
+rep(33:22, {\color{red!13!blue}{each = 4}}) \hfill \# 4 раза каждый элемент 33:22
+\end{alltt}
+\normalsize
+\vfill
+Можно включить генератор случайных чисел:
+\footnotesize 
+\begin{alltt}
+runif(1, 11, 37) \hfill \# случайное число в промежутке (11, 37)
+runif(5, 11, 37) \hfill \# пять случайных чисел в промежутке (11, 37)
+sample(11:37, 6) \hfill \# шесть случайных целых чисел из 11:37
+sample(11:37, 6, {\color{red!13!blue}{replace=TRUE}}) \hfill \# можно повторяться
+sample({\color{red!13!blue}{c("a", "u", "o", "y")}}, 6, replace=TRUE) 
+\end{alltt}
+\normalsize
+\end{frame}
+\subsection{матрицы}
+\begin{frame}[fragile]{Матрицы}
+\begin{itemize}
+\mytem A <- matrix(c(2, 4, 3, 1, 5, 7), \hfill \# данные \\
+{\color{red!13!blue}{  ncol=3) \hfill \# количество колонок}}
+\footnotesize 
+\begin{alltt}
+     [,1] [,2] [,3]
+[1,]    2    3    5
+[2,]    4    1    7
+\end{alltt}
+\normalsize
+\vfill
+\mytem B <- matrix(c(2, 4, 3, 1, 5, 7), \hfill \# данные \\
+{\color{red!13!blue}{  nrow=2)              \hfill \# количество строк}}
+\footnotesize 
+\begin{alltt}
+     [,1] [,2] [,3]
+[1,]    2    3    5
+[2,]    4    1    7
+\end{alltt}
+\normalsize
+\vfill
+\mytem C <- matrix(c(2, 4, 3, 1, 5, 7), \hfill \# данные \\
+  nrow=2,              \hfill \# количество строк\\
+  {\color{red!13!blue}{  byrow = TRUE) \hfill \# по строчкам}}
+\footnotesize 
+\begin{alltt}
+     [,1] [,2] [,3]
+[1,]    2    4    3
+[2,]    1    5    7
+\end{alltt}
+\normalsize
+\end{itemize}
+\end{frame}
+\begin{frame}[fragile]{Матрицы}
+\begin{multicols}{2}
+\begin{itemize}
+\mytem A*10 \medskip
+\footnotesize 
+\begin{alltt}
+     [,1] [,2] [,3]
+[1,]   20   30   50
+[2,]   40   10   70
+\end{alltt}
+\normalsize
+\bigskip
+\mytem транспозиция матрицы \\ t(C) \medskip
+\footnotesize 
+\begin{alltt}
+     [,1] [,2]
+[1,]    2    1
+[2,]    4    5
+[3,]    3    7
+\end{alltt}
+\normalsize
+\bigskip
+\mytem A+C \medskip
+\footnotesize 
+\begin{alltt}
+     [,1] [,2] [,3]
+[1,]    4    7    8
+[2,]    5    6   14
+\end{alltt}
+\normalsize
+\columnbreak
+\mytem поэлементное умножение \\ A*C  \medskip
+\footnotesize 
+\begin{alltt}
+     [,1] [,2] [,3]
+[1,]    4   12   15
+[2,]    4    5   49
+\end{alltt}
+\normalsize
+\vfill
+\mytem умножение матриц \\ A \%*\% t(C) \medskip
+\footnotesize 
+\begin{alltt}
+     [,1] [,2]
+[1,]   31   52
+[2,]   33   58
+\end{alltt}
+\normalsize
+\vfill
+\mytem декомпозиция матрицы \\ c(A) \medskip
+\footnotesize 
+\begin{alltt}
+[1] 2 4 3 1 5 7
+\end{alltt}
+\normalsize
+\end{itemize}
+\end{multicols}
+\end{frame}
+
+\begin{frame}[fragile]{Матрицы: размерности}
+У любой матрицы есть размерности и их сообщает функция \footnotesize\verb"dim()"\normalsize:\\
+dim(A)
+\footnotesize 
+\begin{alltt}
+[1] 2 3
+\end{alltt}
+\normalsize
+dim(t(B))
+\footnotesize 
+\begin{alltt}
+[1] 3 2
+\end{alltt}
+\vfill
+\normalsize
+m <- c(2, 4, 3, 1, 5, 7) \hfill \# создадим вектор\\
+dim(m) <- c(2, 3) \hfill \# изменим его размерности
+\footnotesize 
+\begin{alltt}
+     [,1] [,2] [,3]
+[1,]    2    3    5
+[2,]    4    1    7
+\end{alltt}
+\normalsize
+\end{frame}
+\subsection{многомерные матрицы}
+\begin{frame}[fragile]{Многомерные матрицы}
+array в R — это матрица с любым количеством размерностей (нет, это не массив):\\
+A <- array(26:3, dim = c(3, 4, 2))
+\footnotesize 
+\begin{alltt}
+, , 1
+     [,1] [,2] [,3] [,4]
+[1,]   26   23   20   17
+[2,]   25   22   19   16
+[3,]   24   21   18   15
+
+, , 2
+     [,1] [,2] [,3] [,4]
+[1,]   14   11    8    5
+[2,]   13   10    7    4
+[3,]   12    9    6    3
+\end{alltt}
+\normalsize
+c(A) \hfill \# декомпозиция
+\footnotesize 
+\begin{alltt}
+[1] 26 25 24 23 22 21 20 19 18 17 16 15 14 13 12 11 10  9  8  7  6  5  4  3
+\end{alltt}
+\normalsize
+\end{frame}
+\subsection{списки}
+\begin{frame}[fragile]{Списки}
+Векторы, матрицы и многомерные матрицы позволяют иметь лишь объекты одного класса. Чтобы совмещать единицы разного класса используется функция \footnotesize\verb"list()"\normalsize.\\
+list("abc"{}, TRUE, NA, c(666, 333))
+\footnotesize 
+\begin{alltt}
+[[1]]
+[1] "abc" \medskip
+[[2]]
+[1] TRUE \medskip
+[[3]]
+[1] NA \medskip
+[[4]]
+[1] 666 333
+\end{alltt}
+\normalsize
+\begin{itemize}
+\mytem объектами в \footnotesize\verb"list()"\normalsize{} трудно манипулировать
+\mytem объекты в \footnotesize\verb"list()"\normalsize{} упорядочены
+\mytem объекты, содержащие объект \footnotesize\verb"list()"\normalsize{}, тоже относятся к типу \footnotesize\verb"list()"\normalsize
+\end{itemize}
+\end{frame}
+\subsection{датафрейм}
+\begin{frame}[fragile]{Датафреймы}
+\textit{Датафрейм} (иногда называют \textit{таблицей данных}) — одномерный список векторов одинаковой длинны.\\
+data.frame(num = c(2,3,8,1),
+           tf = c(T,F,T,T),
+           let = c("a","f","k","z"))
+\footnotesize 
+\begin{alltt}
+  num        tf let
+1     2  TRUE   a
+2     3 FALSE   f
+3     8  TRUE   k
+4     1  TRUE   z
+\end{alltt}
+\normalsize
+\end{frame}
+\subsection{факторы}
+\begin{frame}[fragile]{Факторы}
+В R существует отдельный класс векторов, для кодирования единиц из номинальных (род существительного) или порядковых шкал (оценки грамматичности предложения). Иначе векторы c("m"{}, "n"{}, "f") или c(5, 4, 3) воспринимаются R как строки или числа, что может в некоторых случаях вызвать ошибку. Для преобразования вектора в фактор используется следующая функция:\bigskip\\
+{\color{red!13!blue}{factor(}}c("f"{}, "f"{}, "m"{}, "n"{}, "n"{}, "f"{}, "m"{}, "f"), {\color{red!13!blue}{levels}} = c("m"{}, "n"{}, "f"))
+\footnotesize
+\begin{alltt}
+[1] f f m n n f m f
+Levels: m n f
+\end{alltt}
+\normalsize
+\end{frame}
+\subsection{пакеты}
+\begin{frame}{Пакеты}
+Большинство дополнительных функции в R содержаться в дополнительных пакетах.
+\begin{itemize}
+\mytem install.packages(“{\color{red!13!blue}{pkg}}”) \hfill \# скачиваем пакет
+\mytem update.packages \hfill \# проверяет обновления
+\mytem library(“{\color{red!13!blue}{pkg}}”) \hfill \# добавляет пакет в сессию
+\mytem detach(ʺpackage:{\color{red!13!blue}{pkg}}ʺ) \hfill \# удаляет пакет из сессии
+\end{itemize}
+\end{frame}
+\section{if, else, for, while}
+\begin{frame}{Сравнение и логические операторы}
+\footnotesize \verb"m < n" \normalsize \hfill \# меньше \\ \vfill
+\footnotesize \verb"m > n" \normalsize \hfill \# больше\\ \vfill
+\footnotesize \verb"m <= n" \normalsize \hfill \# меньше или равно\\ \vfill
+\footnotesize \verb"m >= n"\normalsize  \hfill \# больше или равно\\ \vfill
+\footnotesize \verb"m == n" \normalsize \hfill \# равно\\ \vfill
+\footnotesize \verb"m != n" \normalsize \hfill \# не равно\\ \vfill
+\footnotesize \verb"m \& n" \normalsize \hfill \# и\\ \vfill
+\footnotesize \verb"m | n" \normalsize \hfill \# или\\ \vfill
+\footnotesize \verb"xor(m, n)" \normalsize \hfill \# исключительное или\\
+\end{frame}
+\begin{frame}[fragile]{Таблицы истинности}
+a <- c (TRUE, TRUE, FALSE)\\
+b <- c (TRUE, FALSE, FALSE)\\
+outer(a, b, "\&")\hfill \# и\\
+\footnotesize 
+\begin{alltt}
+      [,1]  [,2]  [,3]
+[1,]  TRUE FALSE FALSE
+[2,]  TRUE FALSE FALSE
+[3,] FALSE FALSE FALSE
+\end{alltt}
+\normalsize
+outer(a, b, "\verb,|,")\hfill \# или\\
+\footnotesize 
+\begin{alltt}
+     [,1]  [,2]  [,3]
+[1,] TRUE  TRUE  TRUE
+[2,] TRUE  TRUE  TRUE
+[3,] TRUE FALSE FALSE
+\end{alltt}
+\normalsize
+outer(a, b, "xor")\hfill \# исключительное или\\
+\footnotesize 
+\begin{alltt}
+      [,1]  [,2]  [,3]
+[1,] FALSE  TRUE  TRUE
+[2,] FALSE  TRUE  TRUE
+[3,]  TRUE FALSE FALSE
+\end{alltt}
+\normalsize
+\end{frame}
+\begin{frame}[fragile]{Логические операции}
+h <- 1:10\\
+h
+\footnotesize 
+\begin{alltt}
+[1]  {\color{red!13!blue}{1  2  3  4}}  5  6  7  {\color{red!27!green}{8  9 10}}
+\end{alltt}
+\normalsize
+h > 4
+\footnotesize 
+\begin{alltt}
+[1] {\color{red!13!blue}{FALSE FALSE FALSE FALSE}}   TRUE  TRUE  TRUE {\color{red!27!green}{TRUE TRUE TRUE}}
+\end{alltt}
+\normalsize
+h < 8
+\footnotesize 
+\begin{alltt}
+[1] {\color{red!13!blue}{TRUE TRUE TRUE TRUE}}   TRUE  TRUE  TRUE {\color{red!27!green}{FALSE FALSE FALSE}}
+\end{alltt}
+\normalsize
+h > 4 \& h < 8 \hfill \# и\\
+\footnotesize 
+\begin{alltt}
+[1] {\color{red!13!blue}{FALSE FALSE FALSE FALSE}}  TRUE  TRUE  TRUE {\color{red!27!green}{FALSE FALSE FALSE}}
+\end{alltt}
+\normalsize
+h > 4 | h < 8 \hfill \# или\\
+\footnotesize 
+\begin{alltt}
+[1] {\color{red!13!blue}{TRUE TRUE TRUE TRUE}} TRUE TRUE TRUE {\color{red!27!green}{TRUE TRUE TRUE}}
+\end{alltt}
+\normalsize
+xor(h > 4, h < 8) \hfill \# исключительное или\\
+\footnotesize 
+\begin{alltt}
+[1]  {\color{red!13!blue}{TRUE  TRUE  TRUE  TRUE}} FALSE FALSE FALSE  {\color{red!27!green}{TRUE  TRUE  TRUE}}
+\end{alltt}
+\normalsize
+\end{frame}
+\begin{frame}[fragile]{Циклы}
+\begin{itemize}
+\mytem {\color{red!13!blue}{if}}(condition)\{cmd1\} {\color{red!27!green}{else}}\{cmd2\}
+\footnotesize 
+\begin{alltt}
+{\color{red!13!blue}{if}}(i %% 2 == 0)\{
+  print("even")
+  \} {\color{red!27!green}{else}} \{print("odd")\}
+\end{alltt}
+\normalsize
+\vfill
+\mytem {\color{red!13!blue}{ifelse}}(condition, cmd1, cmd2)
+\footnotesize 
+\begin{alltt}
+{\color{red!13!blue}{ifelse}}(i %% 2 == 0, "even", "odd")
+\end{alltt}
+\normalsize
+\vfill
+\mytem {\color{red!13!blue}{for}}(variable {\color{red!27!green}{in}} x)\{cmd\}
+\footnotesize 
+\begin{alltt}
+{\color{red!13!blue}{for}}(i {\color{red!27!green}{in}} 10:20)\{
+  print(exp(i))\}
+\end{alltt}
+\normalsize
+\vfill
+\mytem {\color{red!13!blue}{while}}(condition)\{cmd\}
+\footnotesize 
+\begin{alltt}
+{\color{red!13!blue}{while}}(i < 7)\{
+  print(exp(i))
+  i <- i+1\}
+\end{alltt}
+\normalsize
+\end{itemize}
+\vfill
+R считается медленным языком, так что осторожнее с циклами. \href{http://adv-r.had.co.nz/Performance.html}{\color{red!13!blue}{В книге H. Wickham Advanced R}}{} говорится, почему так, и как бороться.
+\end{frame}
+\begin{frame}[fragile]{Пустые переменные}
+При работе с циклами часто бывает полезно заранее создать пустую переменную, в которую будут писаться значения. \vfill
+\begin{itemize}
+\mytem векторы
+\begin{itemize}
+\mytem numeric(p) \hfill \# создает вектор типа numeric длины p
+\mytem integer(p) \hfill \# создает вектор типа integer длины p
+\mytem complex(p) \hfill \# создает вектор типа complex длины p
+\mytem character(p) \hfill \# создает вектор типа character длины p
+\mytem logical(p) \hfill \# создает вектор типа logical длины p
+\mytem rep(NA\_real\_, p) \hfill \# создает вектор типа integer длины p
+\mytem rep(NA\_integer\_, p) \hfill \# создает вектор типа integer длины p
+\mytem rep(NA\_complex\_, p) \hfill \# создает вектор типа complex длины p
+\mytem rep(NA\_character\_, p) \hfill \# создает вектор типа character длины p
+\end{itemize} \vfill
+\mytem vector(mode = "list", length = 10) \hfill \# 10-элементный список \vfill
+\mytem array(NA, dim = c(p, q, \dots)) \hfill \# матрицы c измерениями p, q, \dots \vfill
+\mytem датафреймы
+\end{itemize}
+\end{frame}
+\section{манипуляции}
+\subsection{чтение}
+\begin{frame}[fragile]{Чтение}
+\begin{itemize}
+\mytem команды \footnotesize \verb"read.table" \normalsize и \footnotesize \verb"read.csv" \normalsize почти идентичны
+\footnotesize
+\begin{alltt}
+X <- {\color{red!13!blue}{read.table}}("/agricolamz/work/R/ALex.txt",  \hfill # путь
+    sep = "\textbackslash{}t", \hfill # тип разделителя
+    header = TRUE) \hfill # первая строчка — имена столбцов?\bigskip
+X <- {\color{red!13!blue}{read.csv}}("http://goo.gl/GkfYYt", \hfill # url
+    sep = "\textbackslash{}t", \hfill # тип разделителя
+    header = TRUE) \hfill # первая строчка — имена столбцов?\bigskip
+\end{alltt}
+\normalsize
+\mytem можно при помощи функции \footnotesize \verb"setwd()" \normalsize установить рабочую директорию и обращаться к файлам по имени
+\footnotesize
+\begin{alltt}
+{\color{red!13!blue}{setwd}}("/agricolamz/work/R") \hfill # путь
+X <- read.table("ALex.txt", \hfill  # имя файла
+    sep = "\textbackslash{}t", \hfill # тип разделителя
+    header = TRUE) \hfill # первая строчка — имена столбцов?\bigskip
+\end{alltt}
+\normalsize
+\mytem для текстов есть команда \footnotesize \verb"readLines()" \normalsize
+\footnotesize
+\begin{alltt}
+text <- {\color{red!13!blue}{readLines}}("test-2.txt", \hfill  # имя файла
+    n = 10) \hfill # количество абзацев
+\end{alltt}
+\normalsize
+\end{itemize}
+\end{frame}
+\subsection{разведка}
+\begin{frame}{Разведка}
+\begin{itemize}
+\mytem \footnotesize \verb"?"\normalsize\hfill ставится перед функцией
+\mytem \footnotesize \verb"apropos("" \verb"x""\verb")"\normalsize\hfill ищет, все, содержащее "x"
+\mytem \footnotesize \verb"summary(x)"\normalsize\hfill для данных
+\mytem \footnotesize \verb"str(x)"\normalsize\hfill и для данных, и для функций
+\mytem \footnotesize \verb"head(x)"\normalsize\hfill первые 6 значений объекта
+\mytem \footnotesize \verb"tail(x)"\normalsize\hfill последние 6 значений объекта
+\mytem \footnotesize \verb"typeof(x)"\normalsize\hfill возвращает тип данных
+\mytem \footnotesize \verb"is.что-то(x)"\normalsize\hfill возвращает вектор логических значений
+\mytem \footnotesize \verb"table(x)"\normalsize\hfill возвращает таблицу сопряженности
+\mytem \footnotesize \verb"unique(x)"\normalsize\hfill возвращает данные без дублей
+\mytem \footnotesize \verb"max(x)"\normalsize, \footnotesize \verb"min(x)"\normalsize \hfill возвращает максим./миним. значение
+\mytem \footnotesize\verb"length(x)"\normalsize, \footnotesize \verb"nrow(x)"\normalsize, \footnotesize \verb"ncol(x)"\normalsize\hfill количество элементов
+\mytem \footnotesize \verb"ls()"\normalsize\hfill возвращает все переменные данной сессии
+\mytem \footnotesize \verb"getAnywhere(x)"\normalsize\hfill возвращает код функции (не для всех)
+\end{itemize}
+\end{frame}
+\subsection{indexing}
+\begin{frame}{Indexing: векторы}
+x <- c(43:21)
+\begin{itemize}
+\mytem x[3]\hfill \# в квадратных скобках\\
+\footnotesize \verb"[1] 41"\normalsize \hfill
+{\color{red!13!blue}{Любители Python! Индексация начинается с 1!}}
+\mytem c(43:21)[3]\hfill \# аналогично можно с любым вектором\\
+\footnotesize \verb"[1] 41"\normalsize
+\mytem x[x\%\%7 == 0]\hfill \# логическое выражение\\
+\footnotesize \verb"[1] 42 35 28 21"\normalsize
+\mytem x[x\%\%7 == 0 \& x\%\%13==0]\hfill \# логическое выражение\\
+\footnotesize \verb"[1] 42 28"\normalsize
+\mytem x[-с(3:19)]\hfill \# все кроме элементов 3:19\\
+\footnotesize \verb"[1] 43 42 24 23 22 21"\normalsize
+\end{itemize}
+\vfill
+x <- c(Anna = 23, Wanda = 24, Agnieszka  = 28) \hfill \# вектор с именами
+\begin{itemize}
+\mytem x["Anna"]\hfill \# обращение по имени\\
+\footnotesize \verb"Anna"\normalsize\\
+\footnotesize \verb"23"\normalsize
+\end{itemize}
+\end{frame}
+\begin{frame}[fragile]{Indexing: матрицы}
+x <- matrix(9:60, nrow = 4)
+\begin{itemize}
+\mytem x[3] \hfill \# третий элемент\\
+\footnotesize \verb"[1] 11"\normalsize
+\mytem x[3,4]  \hfill \# третий столбец, четвертая строчка\\
+\footnotesize \verb"[1] 23"\normalsize
+\mytem x[3, ]  \hfill \# элементы третьей строчки\\
+\footnotesize \verb"[1] 11 15 19 23 27 31 35 39 43 47 51 55 59"\normalsize
+\mytem x[, 3] \hfill \# элементы третьего столбца\\
+\footnotesize \verb"[1] 17 18 19 20"\normalsize
+\mytem x[-c(1, 4),] \hfill \# все, кроме первой и четвертой строчек\\
+\footnotesize
+\begin{alltt}
+     [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10] [,11] [,12] [,13]
+[1,]   10   14   18   22   26   30   34   38   42    46    50    54    58
+[2,]   11   15   19   23   27   31   35   39   43    47    51    55    59
+\end{alltt}
+\normalsize
+\end{itemize}
+\end{frame}
+\begin{frame}[fragile]{Indexing: списки и датафреймы}
+Объект \footnotesize\verb"list()"\normalsize{} содержит несколько векторов. Поэтому чтобы обратиться к какому-то из векторов объекта \footnotesize\verb"list()"\normalsize{} рекомендуется использовать двойные  квадратные скобки: \medskip\\
+y <- list(tf = c(T, F), num = c(82, 99, 21), com = 2 + 9i)\\
+y[[2]] \hfill \# второй вектор списка
+\footnotesize
+\begin{alltt}
+[1] 82 99 21
+\end{alltt}
+\normalsize
+Чтобы обратиться к элементу вектора следует использовать {\color{red!13!blue}{только двойные скобки}}, для обращения к векторы, и одинарные для обращения к элементу:\medskip\\
+y{\color{red!13!blue}{[[2]][3]}} \hfill \# третий элемент второго вектора
+\footnotesize
+\begin{alltt}
+[1] 21
+\end{alltt}
+\normalsize
+Все это работает рекурсивно, так как объекты \footnotesize\verb"list()"\normalsize{}  могут быть вложены друг в друга. Это распространяется и на обращения по имени.
+\end{frame}
+\begin{frame}[fragile]{Indexing: датафреймы}
+Обращение к элементам датафрейма устроены так же, как и в \footnotesize\verb"list()"\normalsize{} и \footnotesize\verb"matrix()"\normalsize{}:\\
+z <- data.frame(tf = c(T, F), num = c(82, 99), com = c(2 + 9i, 8 + 3i))\\
+z[[2]]
+\footnotesize
+\begin{alltt}
+[1] 82 99
+\end{alltt}
+\normalsize
+z[1, 2]
+\footnotesize
+\begin{alltt}
+[1] 82
+\end{alltt}
+\normalsize
+К векторам можно обращаться по имени: \\
+z\$com
+\footnotesize
+\begin{alltt}
+[1] 2+9i 8+3i
+\end{alltt}
+\normalsize
+z\$com[2]
+\footnotesize
+\begin{alltt}
+[1] 8+3i
+\end{alltt}
+\normalsize
+Кроме того, важно отметить, что к элементам можно обращаться, указывая лишь часть имени, например, первую букву:\\
+z\$c[2]
+\footnotesize
+\begin{alltt}
+[1] 8+3i
+\end{alltt}
+\normalsize
+\end{frame}
+\subsection{соединение}
+\begin{frame}[fragile]{Соединение}
+\begin{itemize}
+\mytem векторы: \footnotesize\verb"с(a, b)"\normalsize
+\mytem матрицы: \footnotesize\verb"rbind(a, b), cbind(a, b)"\normalsize, многомерные — \footnotesize\verb"abind()"\normalsize
+\mytem списки:
+\end{itemize}
+\vspace{-5mm}
+\begin{multicols}{3}
+{\color{red!13!blue}{a <- list(2, 3)}}\\
+{\color{red!27!green}{b <- list(5, 6)}}\\
+c({\color{red!13!blue}{a}}, {\color{red!27!green}{b}})
+\footnotesize
+\begin{alltt}
+{\color{red!13!blue}{[[1]]
+    [1] 2
+[[2]]
+    [1] 3}}
+{\color{red!27!green}{[[3]]
+    [1] 5
+[[4]]
+    [1] 6}}
+\end{alltt}
+\normalsize
+\columnbreak
+{\color{red!13!blue}{a <- list(2, 3)}}\\
+{\color{red!27!green}{b <- list(5, 6)}}\\
+c({\color{red!13!blue}{list(a)}},{\color{red!27!green}{list(b)}})
+\footnotesize
+\begin{alltt}
+{\color{red!13!blue}{[[1]]
+    [[1]][[1]]
+        [1] 2
+    [[1]][[2]]
+        [1] 3}}
+{\color{red!27!green}{[[2]]
+    [[2]][[1]]
+        [1] 5
+    [[2]][[2]]
+        [1] 6}}
+\end{alltt}
+\normalsize
+\columnbreak
+{\color{red!13!blue}{a <- list(2, 3)}}\\
+{\color{red!27!green}{b <- list(5, 6)}}\\
+mapply(c, {\color{red!13!blue}{a}}, {\color{red!27!green}{b}}, SIMPLIFY=F)
+\footnotesize
+\begin{alltt}
+{\color{red!13!blue}{[[1]]
+    [1] 2 5}}
+{\color{red!27!green}{[[2]]
+    [1] 3 6}}
+\end{alltt}
+\normalsize
+\end{multicols}
+\vspace{-3mm}
+\begin{itemize}
+\mytem датафреймы: \footnotesize\verb"rbind.data.frame(a, b), cbind.data.frame(a, b)"\normalsize
+\end{itemize}
+\end{frame}
+\subsection{сортировки}
+\begin{frame}[fragile]{Сортировки: вектора}
+a <- c(1, 3, 1, 2, 2, 7, 4, 4, 2, 2, 2, 3, 9, 10, 2, 3, 4, 6, 5)\\
+rev(a)
+\footnotesize
+\begin{alltt}
+[1]  5  6  4  3  2 10  9  3  2  2  2  4  4  7  2  2  1  3  1
+\end{alltt}
+\normalsize
+sort(a)
+\footnotesize
+\begin{alltt}
+[1]  1  1  2  2  2  2  2  2  3  3  3  4  4  4  5  6  7  9 10
+\end{alltt}
+\normalsize
+sort(a, decreasing = T)
+\footnotesize
+\begin{alltt}
+[1] 10  9  7  6  5  4  4  4  3  3  3  2  2  2  2  2  2  1  1
+\end{alltt}
+\normalsize
+sort(a, index.return = T)
+\footnotesize
+\begin{alltt}
+\$x
+[1]  1  1  2  2  2  2  2  2  3  3  3  4  4  4  5  6  7  9 10
+\$ix
+[1]  1  3  4  5  9 10 11 15  2 12 16  7  8 17 19 18  6 13 14
+\end{alltt}
+\normalsize
+\end{frame}
+\begin{frame}[fragile]{Сортировки: матрицы}
+Так как матрицы — всего лишь вектора с измерениями, то все команды сортировки затрагивают их целиком и "убивают"{} измерения.\\
+m <- matrix(c(4, 2, 3, 5, 1, 2, 6, 2, 6, 3, 1, 9), nrow = 4)\\
+sort(m)
+\footnotesize
+\begin{alltt}
+[1] 1 1 2 2 2 3 3 4 5 6 6 9
+\end{alltt}
+\normalsize
+В связи с этим, если мы хотим сохранить структуру, измерения получившегося вектор следует изменить под старые:\\
+p <- sort(m); dim(p) <- dim(m)\\
+p
+\footnotesize
+\begin{alltt}
+     [,1] [,2] [,3]
+[1,]    1    2    5
+[2,]    1    3    6
+[3,]    2    3    6
+[4,]    2    4    9
+\end{alltt}
+\normalsize
+\end{frame}
+\begin{frame}[fragile]{Сортировки: матрицы}
+В пакет \footnotesize\verb"BioPhysConnectoR"\normalsize{} реализована функция \footnotesize\verb"mat.sort"\normalsize{} позволяющая сортировать матрицы по выбранной колонке:\\
+library("BioPhysConnectoR")
+\begin{multicols}{3}
+b\\
+\footnotesize
+\begin{alltt}
+     [,1] [,2] [,3]
+[1,]    4    1    6
+[2,]    2    2    3
+[3,]    3    6    1
+[4,]    5    2    9
+\end{alltt}
+\normalsize
+mat.sort(b)\\
+\footnotesize
+\begin{alltt}
+     [,1] [,2] [,3]
+[1,]    2    2    3
+[2,]    3    6    1
+[3,]    4    1    6
+[4,]    5    2    9
+\end{alltt}
+\normalsize
+mat.sort(b, 3)\\
+\footnotesize
+\begin{alltt}
+     [,1] [,2] [,3]
+[1,]    3    6    1
+[2,]    2    2    3
+[3,]    4    1    6
+[4,]    5    2    9
+\end{alltt}
+\normalsize
+\end{multicols}
+\end{frame}
+\begin{frame}[fragile]{Сортировки: датафрейма}
+Для сортировки матрицы используется команда \footnotesize\verb"order()"\normalsize\\
+df <- data.frame(\\
+name = c("Agnieszka"{}, "Marek"{}, "Marta"{}, "Magda"{}, "Jan"), \hfill \# имя\\
+age = c(24, 23, 19, 25, 21), \hfill \# возраст\\
+sex = c("f"{}, "m"{}, "f"{}, "f"{}, "m"), \hfill \# пол\\
+lang = c(2, 2, 1, 4, 2)) \hfill \# владение языками
+\begin{multicols}{2}
+df[order(df[4]),]
+df[order(df\$lang),]
+\footnotesize
+\begin{alltt}
+           name age sex  lang
+3        Marta    19     f        1
+1 Agnieszka    24     f        2
+2       Marek    23     m      2
+5            Jan    21     m      2
+4       Magda   25     f        4
+\end{alltt}
+\normalsize
+df[order(-df[4], df[2]),]\\
+df[order(-df\$lang, df\$age),]
+\footnotesize
+\begin{alltt}
+           name age sex  lang
+4       Magda   25     f        4
+5            Jan    21     m      2
+2       Marek    23     m      2
+1 Agnieszka    24     f        2
+3        Marta    19     f        1
+\end{alltt}
+\normalsize
+\end{multicols}
+\end{frame}
+\subsection{reshaping}
+\begin{frame}[fragile]{Преобразования}
+df <- data.frame(\\
+name = c("Agnieszka"{}, "Marek"{}, "Marta"{}, "Magda"{}, "Jan"), \hfill \# имя\\
+age = c(24, 23, 19, 25, 21), \hfill \# возраст\\
+sex = c("f"{}, "m"{}, "f"{}, "f"{}, "m"), \hfill \# пол\\
+lang = c(2, 2, 1, 4, 2)) \hfill \# владение языками\\
+\begin{multicols}{3}
+table(df\$sex)\\
+\footnotesize
+\begin{alltt}
+f m 
+3 2 
+\end{alltt}
+\normalsize
+table(df\$sex, df\$lang)
+\footnotesize
+\begin{alltt}
+       4   1   2
+  f    1   1   1
+  m  0   0   2
+\end{alltt}
+\normalsize
+prop.table(table(df\$s))\\
+\footnotesize
+\begin{alltt}
+   f     m 
+0.6  0.4 
+\end{alltt}
+\normalsize
+\end{multicols}
+as.data.frame(table(df\$sex, df\$lang))
+\footnotesize
+\begin{alltt}
+  Var1 Var2 Freq
+1    f       1       1
+2    m     1       0
+3    f       2       1
+4    m     2       2
+5    f       4       1
+6    m     4       0
+\end{alltt}
+\normalsize
+\end{frame}
+\subsection{удаление NA}
+\begin{frame}[fragile]{Удаление NA}
+\begin{itemize}
+\mytem вектор:\\
+a <- c(1, 3, 5, NA, 1, 3, NA)\\
+a[!is.na(a)] или a[complete.cases(a)]\\
+\footnotesize
+\begin{alltt}
+[1] 1 3 5 1 3
+\end{alltt}
+\normalsize
+\vfill
+\mytem датафрейм:\\
+z <- data.frame(tf = c(T, F, NA, T),\\
+num = c(82, NA, 99, 56),\\
+com = c(2 + 9i, 8 + 3i, 5 + 2i, 6 + 1i))\\
+z[complete.cases(z),]\\
+\footnotesize
+\begin{alltt}
+    tf num  com
+1 TRUE  82 2+9i
+4 TRUE  56 6+1i
+\end{alltt}
+\normalsize
+\end{itemize}
+\end{frame}
+\subsection{запись}
+\begin{frame}[fragile]{Запись файлов}
+\begin{itemize}
+\mytem write.csv(df, file = "/agricolamz/work/R/calculi.csv") \hfill \# путь \vfill
+Можно при помощи функции setwd() установить рабочую директорию и не прописывать весь путь:
+\mytem write.{\color{red!13!blue}{table}}(df, file = "calculi.csv"{}, {\color{red!13!blue}{sep = ";"{}}}) \hfill \# разделитель \vfill
+\mytem для текстов есть команда \footnotesize\verb"writeLines"\normalsize
+\end{itemize}
+\end{frame}
+\subsection{память и время}
+\begin{frame}[fragile]{Расход времени и памяти}
+\begin{itemize}
+\mytem Sys.time()\\
+\mytem system.time()\bigskip\\
+library("pryr")
+\mytem object{\_}size()
+\mytem mem{\_}used()
+\mytem mem{\_}change()
+\end{itemize}
+\end{frame}
+\section{функции}
+\begin{frame}{Функции}
+Кроме встроенных функций пользователю также предоставлена возможность делать функции самостоятельно:\\
+function(аргументы)\{действия\}\\
+t <- function(x)\{factorial(x)\} \hfill \# функция с одной переменной\\
+u <- function(x, y)\{x + y\} \hfill \# функция с двумя переменными\\
+v <- function(x = 0)\{exp(x)\} \hfill \# функция со значением по умолчанию\\
+\begin{multicols}{2}
+v()\\
+\footnotesize\verb"[1] 2.718282"\normalsize\\
+v(4)\\
+\footnotesize\verb"[1] 54.59815"\normalsize
+\end{multicols}
+\# умолчание одной переменной может зависеть от другой\\
+w <- function(x=1, y = x*10)\{sum(x:y)\}\\
+\begin{multicols}{3}
+w()\\
+\footnotesize\verb"[1] 55"\normalsize\\
+w(4)\\
+\footnotesize\verb"[1] 814"\normalsize\\
+w(4, 2)\\
+\footnotesize\verb"[1] 9"\normalsize\\
+\end{multicols}
+(function(x)\{3*x\})(10) \hfill \# анонимная функция
+\end{frame}
+\begin{frame}{Функции}
+To understand computations in R, two slogans are helpful:
+\begin{itemize}
+\mytem Everything that exists is an object.
+\mytem Everything that happens is a function call.
+\end{itemize} 
+\hfill — John Chambers\\ \vfill
+Косые ковычки \verb"`"\dots\verb"`" позволяют обращаться к именам всех функций, даже с нестандартным синтаксисом.\\
+x <- 10; y <- 5; x + y \hfill \# сложим два вектора\\
+`+`(x, y) \hfill \# тот же результат\bigskip \\
+for (i in 9:6) print(i) \hfill \# цикл\\
+`for`(i, 1:2, print(i))\hfill \# тот же результат\bigskip \\
+c(5:8)[3]\hfill \# третий элемент вектора\\
+`[`(c(5:8), 3)\hfill \# тот же результат
+\end{frame}
+\section{}
+\begin{frame}
+{\huge Спасибо за внимание\bigskip\\
+\normalsize Пишите письма\\
+agricolamz@gmail.com
+\vspace{-130pt}}
+\end{frame}
+\end{document}

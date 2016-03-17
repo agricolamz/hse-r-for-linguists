@@ -1,0 +1,54 @@
+\frametitle{Квантификаторы}
+a <- c("тара"{}, "коса"{}, "шоссе"{}, "касса"{}, "масса")
+\begin{itemize}
+\mytem gsub("сс{\color{red!13!blue}{?}}"{}, "\textbackslash\textbackslash."{}, a) \hfill \# ноль или один раз
+\scriptsize
+\begin{alltt}
+[1] "тара" "ко.а" "шо.е" "ка.а" "ма.а"
+\end{alltt}
+\normalsize
+\mytem gsub("сс{\color{red!13!blue}{*}}"{}, "\textbackslash\textbackslash."{}, a) \hfill \# ноль и более раз
+\scriptsize
+\begin{alltt}
+[1] "тара" "ко.а" "шо.е" "ка.а" "ма.а"
+\end{alltt}
+\normalsize
+\mytem gsub("сс{\color{red!13!blue}{+}}"{}, "\textbackslash\textbackslash."{}, a) \hfill \# один и более раз
+\scriptsize
+\begin{alltt}
+[1] "тара" "коса" "шо.е" "ка.а" "ма.а"
+\end{alltt}
+\normalsize
+\mytem gsub("а{\color{red!13!blue}{.}}а"{}, "\textbackslash\textbackslash."{}, a) \hfill \# любой символ
+\scriptsize
+\begin{alltt}
+[1] "т."    "коса"  "шоссе" "касса" "масса"
+\end{alltt}
+\normalsize
+\mytem gsub("а{\color{red!13!blue}{.*}}а"{}, "\textbackslash\textbackslash."{}, a) \hfill \# любой символ ноль и более раз
+\scriptsize
+\begin{alltt}
+[1] "т."    "коса"  "шоссе" "к." "м."
+\end{alltt}
+\normalsize
+\mytem gsub("с{\color{red!13!blue}{\{2\}}}"{}, "\textbackslash\textbackslash."{}, a) \hfill \# два раза
+\scriptsize
+\begin{alltt}
+[1] "тара"    "коса"  "шоссе" "ка.а" "ма.а"
+\end{alltt}
+\normalsize
+\mytem gsub("с{\color{red!13!blue}{\{1,\}}}"{}, "\textbackslash\textbackslash."{}, a) \hfill \# один и более раз
+\scriptsize
+\begin{alltt}
+[1] "тара"    "ко.а"  "шоссе" "ка.а" "ма.а"
+\end{alltt}
+\normalsize
+\mytem gsub("с{\color{red!13!blue}{\{1,2\}}}"{}, "\textbackslash\textbackslash."{}, a) \hfill \# от одного до двух раз
+\scriptsize
+\begin{alltt}
+[1] "тара"    "ко.а"  "шоссе" "ка.а" "ма.а"
+\end{alltt}
+\normalsize
+\end{itemize}
+\vspace{-2mm}
+{\color{red!13!blue}{Пробел}}: \scriptsize\verb*"с{1,2}"\normalsize{} — правильно, \scriptsize\verb*"с{1, 2}"\normalsize{} — неправильно.
