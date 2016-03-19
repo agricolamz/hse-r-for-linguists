@@ -1,9 +1,0 @@
-\frametitle{Расход времени и памяти}
-\begin{itemize}
-\mytem Sys.time()\\
-\mytem system.time()\bigskip\\
-library("pryr")
-\mytem object{\_}size()
-\mytem mem{\_}used()
-\mytem mem{\_}change()
-\end{itemize}
