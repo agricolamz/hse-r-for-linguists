@@ -7,3 +7,4 @@
 2. [Работа со строками в R](https://github.com/agricolamz/hse-r-for-linguists/raw/master/2.%20Work%20with%20strings/working_with_strings.pdf)
 3. [Визуализация данных](https://github.com/agricolamz/hse-r-for-linguists/raw/master/3.%20Data%20visualization/Data%20Visualization.pdf)
 4. [Описательная и класическая статистика в R](https://github.com/agricolamz/hse-r-for-linguists/raw/master/4.%20Descriptive%20statistics/descriptive_and_simple_statistics.pdf)
+5. [Корреляции и другие связи переменных. Регрессионный анализ](https://github.com/agricolamz/hse-r-for-linguists/raw/master/5.%20Corelation%20and%20regression/correlation_regressions.pdf)
