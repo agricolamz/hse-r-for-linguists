@@ -443,7 +443,7 @@ alternative hypothesis: true location shift is not equal to 5
 \vfill
 \footnotesize
 \begin{alltt}
-binom.test(58, size = 61981, p = 0.0000021) \hfill \# про \textit{кенгуру} \\
+binom.test(x = 58, n = 61981, p = 0.0000021) \hfill \# про \textit{кенгуру} \\
 binom.test(58, 61981, 0.0000021) \hfill \# про \textit{кенгуру}\\ 
 binom.test(254, 61981, 0.005389) \hfill \# про \textit{к}
 \end{alltt}
@@ -674,7 +674,7 @@ $$P = (1-\alpha)^m = (1 - 0.05)^{21} = 0.34$$
 \parbox[t]{2mm}{\multirow{3}{*}{\rotatebox[origin=c]{90}{не норм.}}} & \multicolumn{ 1}{l|}{с заданным значением} & 1 & критерий Уилкоксона \\ \cline{ 2- 4}
 \multicolumn{ 1}{|l|}{} & независимые & 2 & критерий Манна-Уитни \\ \cline{ 2- 4}
 \multicolumn{ 1}{|l|}{} & зависимые & 2 & критерий Уилкоксона \\ \hline
-\parbox[t]{2mm}{\multirow{3}{*}{\rotatebox[origin=c]{90}{категор.}}} & \multicolumn{ 1}{l|}{с заданным значением} & 1 & биномиальный тест \\ \cline{ 2- 4}
+\parbox[t]{2mm}{\multirow{3}{*}{\rotatebox[origin=c]{90}{категор.}}} & \multicolumn{ 1}{l|}{с заданными частотами} & 1 & биномиальный тест, χ² \\ \cline{ 2- 4}
 \multicolumn{ 1}{|l|}{} & независимые & 2 & χ² с поправкой Йейтса, Фишер, Крамер \\ \cline{ 2- 4}
 \multicolumn{ 1}{|l|}{} & зависимые & 2 & критерий Мак-Нимора \\\hline
 \end{tabular}\\
