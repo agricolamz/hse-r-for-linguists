@@ -526,10 +526,24 @@ F-statistic:   673 on 1 and 18 DF,  p-value: 1.036e-15\\
 \begin{itemize}
 \mytem построить модель из всех предикторов, а потом "выкидывать" не значимые
 \mytem строить модель снизу вверх добавляя по одному предиктору, выясняя какие значимы, а какие нет
+\mytem смешанная
 \end{itemize}
 \vfill
-Если много предикторов, то возникает желание перебрать все возможные варианты и узнать, в какой модели лучше скорректированный R², AIC и BIC. Для этого, естественно уже написаны готовые функции (см. функцию \scriptsize\verb"regsubsets"\normalsize\ в пакете \scriptsize\verb"leaps"\normalsize, \scriptsize\verb"bestglm"\normalsize\ в пакете \scriptsize\verb"bestglm"\normalsize\ или пакет \scriptsize\verb"FWDselect"\normalsize\  и его описание \citep{sestelo2016}). Однако многие высказывают недовольство такой стратегией выискивания лучшей из моделей, построенных на одних и тех же данных, приравнивая ее к \textbf{\textit{data fishing}}.
+Если много предикторов, то возникает желание перебрать все возможные варианты и узнать, в какой модели лучше скорректированный R², AIC и BIC. Для этого, естественно, уже написаны готовые функции (см. функцию \scriptsize\verb"step"\normalsize, \scriptsize\verb"regsubsets"\normalsize\ в пакете \scriptsize\verb"leaps"\normalsize, \scriptsize\verb"bestglm"\normalsize\ в пакете \scriptsize\verb"bestglm"\normalsize\ или пакет \scriptsize\verb"FWDselect"\normalsize\  и его описание \citep{sestelo2016}). Можно встретить отрицательное отношение к такой стратегии выискивания лучшей из моделей, построенных на одних и тех же данных, так как некоторые приравнивают ее к \textbf{\textit{data fishing}}.
 \end{frame}
+\begin{frame}{Перебор моделей: step}
+Функция \scriptsize\verb"step"\normalsize перебирает модели на основе AIC. Аргумент \scriptsize\verb"direction"\normalsize позволяет выбрать стратегию перебора: \scriptsize\verb"backward"\normalsize, \scriptsize\verb"forward"\normalsize\ или \scriptsize\verb"both"\normalsize. По умолчанию функция показывает ход своей работы, чтобы вывести на экран характеристики выбранной модели, следует использовать функцию \scriptsize\verb"summary"\normalsize.
+\vfill
+\scriptsize
+\begin{alltt}
+step(lm(duration~., data = vowels))\\
+step(lm(duration~., data = vowels), method = "both")\\
+summary(step(lm(duration~., data = vowels), method = "both"))
+\end{alltt}
+\normalsize
+
+\end{frame}
+
 \section{другие регресии}
 \begin{frame}{В данной презентации не рассказано о…}
 \begin{itemize}
