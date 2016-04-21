@@ -528,7 +528,7 @@ F-statistic:   673 on 1 and 18 DF,  p-value: 1.036e-15\\
 \mytem строить модель снизу вверх добавляя по одному предиктору, выясняя какие значимы, а какие нет
 \end{itemize}
 \vfill
-Если много предикторов, то возникает желание перебрать все возможные варианты и узнать, в какой модели лучше скорректированный R², AIC и BIC. Для этого, естественно уже написаны готовые функции (см. функцию \scriptsize\verb"regsubsets"\normalsize\ в пакете \scriptsize\verb"leaps"\normalsize\ или \scriptsize\verb"bestglm"\normalsize\ в пакете \scriptsize\verb"bestglm"\normalsize). Однако многие высказывают недовольство такой стратегией выискивания лучшей из моделей, построенных на одних и тех же данных, приравнивая ее к \textbf{\textit{data fishing}}.
+Если много предикторов, то возникает желание перебрать все возможные варианты и узнать, в какой модели лучше скорректированный R², AIC и BIC. Для этого, естественно уже написаны готовые функции (см. функцию \scriptsize\verb"regsubsets"\normalsize\ в пакете \scriptsize\verb"leaps"\normalsize, \scriptsize\verb"bestglm"\normalsize\ в пакете \scriptsize\verb"bestglm"\normalsize\ или пакет \scriptsize\verb"FWDselect"\normalsize\  и его описание \citep{sestelo2016}). Однако многие высказывают недовольство такой стратегией выискивания лучшей из моделей, построенных на одних и тех же данных, приравнивая ее к \textbf{\textit{data fishing}}.
 \end{frame}
 \section{другие регресии}
 \begin{frame}{В данной презентации не рассказано о…}
