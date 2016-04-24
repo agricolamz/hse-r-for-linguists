@@ -657,6 +657,20 @@ McNemar's chi-squared = 6.7586, df = 1, p-value = 0.00933\\
 При проверке каждой статистической гипотезы закладывается возможность ошибки первого рода (т. е. отклонение верной нулевой гипотезы). Чем больше гипотез мы проверяем на одних и тех же данных, тем больше будет вероятность допустить как минимум одну такую ошибку.  Вероятность того, что из 21 теста (включая первый тест, без исключения цвета) не будет допущена ошибка первого рода равна 
 $$P = (1-\alpha)^m = (1 - 0.05)^{21} = 0.34$$
 \end{frame}
+\begin{frame}{Поправки на множественное сравнение}
+\scriptsize \verb"x <- c(0.04, 0.03, 0.01)" \normalsize \hfill \# вектор p-value\\
+\begin{itemize}
+\mytem \scriptsize \verb"p.adjust(x, \alert{method = 'bonferroni'})" \normalsize \hfill \# поправка Бонферрони\\
+\mytem \scriptsize \verb"p.adjust(x, \alert{method = 'holm'})" \normalsize \hfill \# метод Холма
+\mytem \scriptsize \verb"p.adjust(x, \alert{method = 'BH'})" \normalsize \hfill \# метод Беньямини-Хохберга
+\mytem \scriptsize \verb"p.adjust(x, \alert{method = 'BY'})" \normalsize \hfill \# метод Беньямини-Йекутили
+\mytem \href{http://stats.stackexchange.com/a/71491}{\alert{и еще несколько…}}
+\end{itemize}
+\vfill
+Кроме того, можно сразу определить, какие p-value превышают выбранное значение α?\medskip\\
+\scriptsize \verb"p.adjust(x, method = …) \alert{> 0.05}"\\
+\verb"[1] FALSE  TRUE  TRUE" \normalsize
+\end{frame}
 \begin{frame}{Многовыборочные тесты (multiple-sample tests)}
 \vfill
 \includegraphics[width=\linewidth]{anova.jpg}

@@ -143,35 +143,57 @@ consonant & pause & vowel \\
 \scriptsize
 \begin{alltt}
 \alert{aggregate(s.deletion\textasciitilde gramm.cat, \hfill \# формула\\
-data = a[a\$s.deletion == "deleted"{},], \hfill \# данные\\
-length)\hfill \# функция\\}
-\begin{tabular}{rrr}
- & gramm.cat & s.deletion \\ 
-1 & adjective & 298 \\ 
-2 & determiner & 604 \\ 
-3 & noun & 1594 \\
-4 & separate morpheme & 2556 \\ 
-5 & verb & 39 \\
+data = a, \hfill \# данные\\
+summary)\hfill \# функция\\}
+\begin{tabular}{rrrr}
+\multicolumn{1}{l}{} & gramm.cat & \multicolumn{1}{l}{s.deletion.no} & \multicolumn{1}{l}{s.deletion.yes} \\ 
+1 & adjective & 311 & 298 \\ 
+2 & determiner & 789 & 604 \\ 
+3 & noun & 674 & 1594 \\ 
+4 & separate morpheme & 1904 & 2556 \\ 
+5 & verb & 77 & 39 \\ 
 \end{tabular}
 \\
 \alert{aggregate(s.deletion\textasciitilde gramm.cat + phon.cont, \hfill \# формула\\
-data = a[a\$s.deletion == "deleted"{},], \hfill \# данные\\
-length)\hfill \# функция\\}
-\begin{tabular}{rrrr}
- & gramm.cat & phon.cont & s.deletion \\
-1 & adjective & consonant & 205 \\ 
-2 & determiner & consonant & 524 \\ 
-3 & noun & consonant & 733 \\ 
-4 & separate morpheme & consonant & 1355 \\ 
-5 & verb & consonant & 23 \\ 
-6 & adjective & pause & 48 \\ 
-7 & noun & pause & 485 \\ 
-8 & separate morpheme & pause & 471 \\ 
-9 & adjective & vowell & 45 \\ 
-10 & determiner & vowell & 80 \\ 
-11 & noun & vowell & 376 \\ 
-12 & separate morpheme & vowell & 730 \\ 
-13 & verb & vowell & 16 \\ 
+data = a, \hfill \# данные\\
+summary)\hfill \# функция\\}
+\begin{tabular}{rrrrr}
+ & gramm.cat & phon.cont & s.deletion.no & s.deletion.yes \\
+1 & adjective & consonant & 261 & 205\\ 
+2 & determiner & consonant & 678 & 524 \\ 
+3 & noun & consonant & 418 & 733 \\ 
+4 & separate morpheme & consonant & 1361 & 1355 \\ 
+5 & verb & consonant & 42 & 23 \\ 
+6 & adjective & pause & 22 & 48 \\ 
+7 & noun & pause & 132 & 485 \\ 
+8 & separate morpheme & pause & 146 & 471 \\ 
+9 & adjective & vowell & 28 & 45 \\ 
+10 & determiner & vowell & 111 & 80 \\ 
+11 & noun & vowell & 124 & 376 \\ 
+12 & separate morpheme & vowell & 397 & 730 \\ 
+13 & verb & vowell & 35 & 16 \\ 
+\end{tabular}
+\end{alltt}
+\normalsize
+\end{frame}
+\begin{frame}
+\scriptsize
+\begin{alltt}
+b <- aggregate(s.deletion\textasciitilde gramm.cat, \\
+                    data = a, \\
+                    summary) \\
+\alert{\# лучше смотреть на соотношения в процентах}\\
+\alert{\# apply(df, 1, FUN) применяет функцию FUN к каждой строчке df}\\
+b\$prop.no <- apply(b[,length(b)], 1, prop.table)[1,]\\
+b\$prop.yes <- apply(b[,length(b)-1], 1, prop.table)[2,]\\
+b\\
+\begin{tabular}{rrrrrr}
+\multicolumn{1}{l}{} & gramm.cat & \multicolumn{1}{l}{s.delet.no} & \multicolumn{1}{l}{s.delet.yes} & \alert{prop.no} & \alert{prop.yes} \\ 
+1 & adjective & 311 & 298 & \alert{0.51} & \alert{0.49} \\ 
+2 & determiner & 789 & 604 & \alert{0.57} & \alert{0.43} \\ 
+3 & noun & 674 & 1594 & \alert{0.30} & \alert{0.70} \\ 
+4 & separate morpheme & 1904 & 2556 & \alert{0.43} & \alert{0.57} \\ 
+5 & verb & 77 & 39 & \alert{0.66} & \alert{0.34} \\ 
 \end{tabular}
 \end{alltt}
 \normalsize
