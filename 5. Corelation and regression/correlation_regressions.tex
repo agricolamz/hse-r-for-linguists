@@ -558,9 +558,9 @@ F-statistic:   673 on 1 and 18 DF,  p-value: 1.036e-15\\
 \vfill
 \scriptsize
 \begin{alltt}
-step(lm(duration~., data = vowels))\\
-step(lm(duration~., data = vowels), method = "both")\\
-summary(step(lm(duration~., data = vowels), method = "both"))
+step(lm(duration\textasciitilde., data = vowels))\\
+step(lm(duration\textasciitilde., data = vowels), method = "both")\\
+summary(step(lm(duration\textasciitilde., data = vowels), method = "both"))
 \end{alltt}
 \normalsize
 
