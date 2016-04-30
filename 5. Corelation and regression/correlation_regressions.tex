@@ -320,7 +320,7 @@ F-statistic:   673 on 1 and 18 DF,  p-value: 1.036e-15\\
 \begin{alltt}
 fit.f <- lm(pitch\textasciitilde  age, dff)\\
 plot(dff\$age, dff\$pitch)\\
-lines(dff\$age, \alert{fit.f\$fitted.values})
+abline(fit.f)
 \end{alltt}
 \normalsize
 \end{frame}
@@ -563,7 +563,58 @@ step(lm(duration\textasciitilde., data = vowels), method = "both")\\
 summary(step(lm(duration\textasciitilde., data = vowels), method = "both"))
 \end{alltt}
 \normalsize
+\end{frame}
+\section{синтаксическая заметка}
+\begin{frame}{Aspects \sout{of the Theory} of Syntax}
+\begin{itemize}
+\mytem $y=\mbox{β}_0+\mbox{β}_1\cdot x_1 +\mbox{ε}_i$ \hfill обычная формула\\
+\scriptsize
+\begin{alltt}
+\alert{y\textasciitilde x}
+\end{alltt}
+\normalsize
+\mytem $y=\mbox{β}_0+\mbox{β}_1\cdot x_1 +\mbox{β}_2\cdot x_2 +\mbox{ε}_i$ \hfill обычная формула\\
+\scriptsize
+\begin{alltt}
+\alert{y\textasciitilde x + z}
+\end{alltt}
+\normalsize
+\mytem $y=\mbox{β}_0+\mbox{β}_1\cdot x_2\cdot x_1 +\mbox{ε}_i$ \hfill только взаимодействие\\
+\scriptsize
+\begin{alltt}
+\alert{y\textasciitilde x:z}
+\end{alltt}
+\normalsize
+\mytem $y=\mbox{β}_0+\mbox{β}_1\cdot x_1 +\mbox{β}_2\cdot x_2 +\mbox{β}_3\cdot x_2\cdot x_1 +\mbox{ε}_i$ \hfill с взаимодействием\\
+\scriptsize
+\begin{alltt}
+\alert{y\textasciitilde x*z\hfill }
+\end{alltt}
+\normalsize
+\mytem $y=\mbox{β}_0 +\mbox{ε}_i$ \hfill формула без предикторов\\
+\scriptsize
+\begin{alltt}
+\alert{y\textasciitilde 1}
+\end{alltt}
+\normalsize
+\mytem $y=\mbox{β}_1\cdot x_1 +\mbox{ε}_i$ \hfill формула без свободного члена\\
+\scriptsize
+\begin{alltt}
+\alert{y\textasciitilde x - 1}
+\end{alltt}
+\normalsize
+\mytem $y=\mbox{β}_0+\mbox{β}_1\cdot x_1+\mbox{β}_2\cdot x_2 + \dots +\mbox{β}_k\cdot x_k +\mbox{ε}_i$ \hfill все предикторы\\
+\scriptsize
+\begin{alltt}
+\alert{y\textasciitilde \textbf{.}}
+\end{alltt}
+\normalsize
+\end{itemize}
+\scriptsize
+\begin{alltt}
 
+\end{alltt}
+\normalsize
 \end{frame}
 
 \section{другие регресии}
