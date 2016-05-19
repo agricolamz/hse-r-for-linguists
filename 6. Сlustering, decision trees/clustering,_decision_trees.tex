@@ -98,7 +98,7 @@ Turkish & SOV & 0 & infl \\
 Estonian & SVO & 0 & non.infl \\ 
 Malagasy & VOS & 0 & non.infl \\ 
 \end{tabular}} \medskip\\
-\alert{model.matrix( ~ . -1, data=df)\\
+\alert{model.matrix( \textasciitilde . -1, data=df)\\
 \begin{tabular}{lrrrrr}
  & \multicolumn{1}{l}{orderSOV} & \multicolumn{1}{l}{orderSVO} & \multicolumn{1}{l}{orderVOS} & \multicolumn{1}{l}{gender3} & \multicolumn{1}{l}{futurenon.infl} \\ 
 English & 0 & 1 & 0 & 1 & 1 \\ 
@@ -163,7 +163,7 @@ stringdist(str3, str4, method = "lv")
 \end{alltt}
 \normalsize
 \end{frame}
-\begin{frame}{Еще способы уменьшения размерностей?}
+\begin{frame}{Cпособы уменьшения размерностей?}
 \begin{itemize}
 \mytem регрессионный анализ
 \mytem кластеризация
@@ -430,7 +430,7 @@ ad.c <- \alert{as.phylo(}ad.c\alert{)} \hfill \# этот формат лучш�
 df <- read.csv("http://goo.gl/NwbKsN") \\
 df\$social <- \alert{factor(df\$social) \hfill \# внимание! числовой vs. номинативный}\medskip\\
 \alert{library(party)} \\
-fit <- alert{ctree(}s.deletion~phon.cont+social, data=df\alert{)}\\
+fit <- alert{ctree(}s.deletion\textasciitilde phon.cont+social, data=df\alert{)}\\
 plot(fit)
 \end{alltt}
 \normalsize
