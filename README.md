@@ -10,4 +10,4 @@
 5. [Корреляции и другие связи переменных. Регрессионный анализ](https://github.com/agricolamz/hse-r-for-linguists/raw/master/5.%20Corelation%20and%20regression/correlation_regressions.pdf)
 6. [Матрицы расстояний, кластеризации и деревья решений](https://github.com/agricolamz/hse-r-for-linguists/raw/master/6.%20Сlustering,%20decision%20trees/clustering,_decision_trees.pdf)
 
-Спасибо за замечания С. Павловой, Л. Полянской, В. Адриянец и Т. Гавриловой.
+Спасибо за замечания С. Павловой, Л. Полянской, В. Адриянец, Т. Гавриловой и Л. Дзедзич.
