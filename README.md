@@ -9,5 +9,7 @@
 4. [Описательная и класическая статистика в R](https://github.com/agricolamz/hse-r-for-linguists/raw/master/4.%20Descriptive%20statistics/descriptive_and_simple_statistics.pdf)
 5. [Корреляции и другие связи переменных. Регрессионный анализ](https://github.com/agricolamz/hse-r-for-linguists/raw/master/5.%20Corelation%20and%20regression/correlation_regressions.pdf)
 6. [Матрицы расстояний, кластеризации и деревья решений](https://github.com/agricolamz/hse-r-for-linguists/raw/master/6.%20Сlustering,%20decision%20trees/clustering,_decision_trees.pdf)
+7. [Логистическая регрессия](https://github.com/agricolamz/hse-r-for-linguists/raw/master/7.%20Logistic%20regression/logisticregression.pdf)
+
 
 Спасибо за замечания С. Павловой, Л. Полянской, В. Адриянец, Т. Гавриловой и Л. Дзедзич.
