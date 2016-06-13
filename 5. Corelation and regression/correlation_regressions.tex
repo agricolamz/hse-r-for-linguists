@@ -21,7 +21,7 @@
 \begin{itemize}
 \mytem две количественные переменные \hfill \alert{как связаны?}
 \begin{itemize}
-\item[$\Rightarrow$] коэффициенты корреляции Пирсона, Спирмана, Кенделла
+\item[$\Rightarrow$] коэффициенты корреляции Пирсона, Спирмена, Кенделла
 \end{itemize}
 \mytem две качественные переменные 
 \begin{itemize}
@@ -68,13 +68,13 @@ sample estimates:\\
 тип данных: числовой\\
 параметрический (требует линейности связи)\\~
 \end{frame}
-\begin{frame}{Коэффициенты корреляции Спирмана, Кенделла}
+\begin{frame}{Коэффициенты корреляции Спирмена, Кенделла}
 \includegraphics[width=\linewidth]{correlation2.pdf}\\
 \scriptsize
 \begin{alltt}
 x <- c(2, 8, 3, 7, 11, 3)\\
 y <- c(12, 7, 10, 8, 5, 11)\\
-\alert{cor(x, y, method = "spearman") \hfill \# коэффициент корреляции Спирмана}\\
+\alert{cor(x, y, method = "spearman") \hfill \# коэффициент корреляции Спирмена}\\
 \alert{cor.test(x, y, method = "spearman")}\\
 \alert{cor(x, y, method = "kendall") \hfill \# коэффициент корреляции Кенделла}\\
 \alert{cor.test(x, y, method = "kendall")}
