@@ -199,7 +199,7 @@ A frequentist uses impeccable logic to answer the wrong question, while a Bayese
 \begin{itemize}
 \mytem {\color{red}{mean(x) \hfill \# среднее}}
 \mytem \alert{sd(x) \hfill \# стандартное отклонение}
-\mytem sd(x)/sqrt(x)\hfill \# стандартная ошибка среднего
+\mytem sd(x)/sqrt(length(x))\hfill \# стандартная ошибка среднего
 \mytem library("plotrix"); std.error(x) \hfill \# стандартная ошибка среднего
 \mytem {\color{green}{mean(x) $\pm$ 1.96*std.error(x) \hfill \# 95\% доверительный интервал}}
 \mytem mean(x) $\pm$ 2.58*std.error(x) \hfill \# 99\% доверительный интервал
