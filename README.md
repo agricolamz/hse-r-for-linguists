@@ -3,8 +3,9 @@
 
 Основные материалы курса, библиотека, задания и т. п. [лежат здесь](http://r-for-linguists.wikispaces.com/).
 
-1.1 [Типы объектов в R и манипуляция с ними](https://github.com/agricolamz/hse-r-for-linguists/raw/master/1.%20Data%20manipulation/data_manipulation.pdf)
-1.2 [Продвинутая манипуляция с датафреймами: пакеты dplyr и tidyr](https://github.com/agricolamz/hse-r-for-linguists/raw/master/1.2%20Advanced%20data%20manipulation%20with%20dplyr/advanced_data_manipulation.pdf)
+1. Троло-ло
+  1. [Типы объектов в R и манипуляция с ними](https://github.com/agricolamz/hse-r-for-linguists/raw/master/1.%20Data%20manipulation/data_manipulation.pdf)
+  2. [Продвинутая манипуляция с датафреймами: пакеты dplyr и tidyr](https://github.com/agricolamz/hse-r-for-linguists/raw/master/1.2%20Advanced%20data%20manipulation%20with%20dplyr/advanced_data_manipulation.pdf)
 2. [Работа со строками в R](https://github.com/agricolamz/hse-r-for-linguists/raw/master/2.%20Work%20with%20strings/working_with_strings.pdf)
 3. [Визуализация данных](https://github.com/agricolamz/hse-r-for-linguists/raw/master/3.%20Data%20visualization/Data%20Visualization.pdf)
 4. [Описательная и класическая статистика в R](https://github.com/agricolamz/hse-r-for-linguists/raw/master/4.%20Descriptive%20statistics/descriptive_and_simple_statistics.pdf)
