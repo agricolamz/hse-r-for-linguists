@@ -1,0 +1,612 @@
+\input{pre}
+\setbeamercolor{alerted text}{fg=blue}
+\setbeamersize{text margin left=4mm,text margin right=1mm} 
+\setbeamertemplate{navigation symbols}{
+	\usebeamerfont{footline}%
+    \usebeamercolor[fg]{footline}%
+    \hspace{1em}%
+    {{\small презентация доступна: \href{http://1drv.ms/1PMoiZj}{\textbf{http://1drv.ms/1PMoiZj}}}
+    \hspace{40mm}
+    \insertframenumber/\inserttotalframenumber\vspace{0.5mm}}}
+% начало
+\title[]{Продвинутая манипуляция с датафреймами:\\ пакеты \small \texttt{dplyr}\normalsize\ и \small\texttt{tidyr}\normalsize}
+\author[]{Г. Мороз}
+\date{}
+\begin{document}
+\frame{\titlepage}
+\begin{frame}{Данные}
+В данной презентации все примеры будут приводиться на примере датасета из работы [Chi-kuk 2007] (доступна по ссылке http://goo.gl/MKfSc6). В работе исследовались речь 7 гомосексуальных и 7 гетеросексуальных носителей кантонского диалекта языка юэ. В датасете есть следующие переменные:
+\begin{itemize}
+\mytem долгота s (s.duration.ms)
+\mytem долгота гласных (vowel.duration.ms)
+\mytem среднее значении ЧОТ (average.f0.Hz)
+\mytem диапозон ЧОТ (f0.range.Hz)
+\mytem сколько носителей воспринимает говорящего как гомосексуалa (perceived.as.homo)
+\mytem сколько носителей воспринимает говорящего как гетеросексуалa (perceived.as.hetero)
+\mytem ориентация говорящего (orientation)
+\mytem возраст говорящего (age)
+\end{itemize}
+\end{frame}
+\section{tbl\_df}
+\begin{frame}{tbl\_df}
+Первая важная функция пакет \scriptsize\verb"dplyr"\normalsize\ это формат tbl\_df, который позволяет выводить на экран значительно более удобным способом, а в остальном это все тот же датафрейм:\\
+\vfill
+\scriptsize
+\begin{alltt}
+homo <- read.csv("http://goo.gl/Zjr9aF") \hfill \# скачиваем данные \medskip\\
+\alert{library(dplyr)}
+homo <- \alert{tbl\_df(}homo\alert{)} \hfill \# преобразуем данные \\
+head(homo) \hfill \# первые шесть значений \\
+\vfill
+\# A tibble: 6 x 10\\
+\begin{tabular}{rrrrr}
+ & speaker & s.duration.ms & vowel.duration.ms & average.f0.Hz \\ 
+ & <fctr> & <dbl> & <dbl> & <dbl> \\ 
+1 & A & 61.40 & 112.60 & 119.51  \\ 
+2 & B & 63.90 & 126.49 & 100.29  \\ 
+3 & C & 55.08 & 126.81 & 114.90 \\ 
+4 & D & 78.11 & 119.17 & 126.61 \\ 
+5 & E & 64.71 & 93.68 & 130.76  \\ 
+6 & F & 67.00 & 127.87 & 150.79 \\ 
+\end{tabular}
+\\
+\# ... with 6 more variables: f0.range.Hz <dbl>, \\
+\#   perceived.as.homo <int>, perceived.as.hetero <int>, \\
+\#   perceived.as.homo.percent <dbl>, orientation <fctr>, \\
+\#   age <int>
+\end{alltt}
+\normalsize
+\end{frame}
+\section{подмножество строк}
+\begin{frame}{Подмножество строк по условию}
+\noindent Какие информанты старше 28?\\ \vfill
+\begin{columns}[T] 
+\begin{column}{.48\textwidth}
+\textbf{base R}\\
+\scriptsize
+\begin{alltt}
+homo[homo\$age > 28, ]
+\end{alltt}
+\normalsize
+\end{column}
+\hfill
+\begin{column}{.48\textwidth}
+\textbf{dplyr}\\
+\scriptsize
+\begin{alltt}
+homo \alert{\%>\%}\\ 
+\ \ \ \alert{filter(}age > 28\alert{)}
+\end{alltt}
+\normalsize
+\end{column}
+\end{columns}
+\hfill
+\scriptsize
+\begin{alltt}
+\# A tibble: 7 x 10\\
+\begin{tabular}{rrrrr}
+ & speaker & s.duration.ms & vowel.duration.ms & average.f0.Hz \\ 
+ & <fctr> & <dbl> & <dbl> & <dbl> \\ 
+1 & A & 61.40 & 112.60 & 119.51  \\ 
+3 & C & 55.08 & 126.81 & 114.90 \\ 
+4 & D & 78.11 & 119.17 & 126.61 \\ 
+6 & F & 67.00 & 127.87 & 150.79 \\ 
+5 & J & 59.59  &  121.01  & 123.90  \\ 
+6 & K & 62.94 & 137.37 & 119.48 \\ 
+7 & N & 57.67 & 118.02 & 121.48 \\ 
+\end{tabular}
+\\
+\# ... with 6 more variables: f0.range.Hz <dbl>,\\
+\#   perceived.as.homo <int>, perceived.as.hetero <int>,\\
+\#   perceived.as.homo.percent <dbl>, orientation <fctr>,\\
+\#   age <int>
+\end{alltt}
+\normalsize
+\hfill\\
+\noindent Оператор \scriptsize\texttt{\alert{\%>\%}}\normalsize\ называется конвейер (по-английски pipe) и вставляется при помощи сочетания клавиш \alert{Ctrl+Shift+m}.\bigskip
+\end{frame}
+
+\begin{frame}{Подмножество строк по номеру}
+\noindent Какие информанты хранятся под номером 3, 4, 5, 6, 7?\\ \vfill
+\begin{columns}[T] 
+\begin{column}{.48\textwidth}
+\textbf{base R}\\
+\scriptsize
+\begin{alltt}
+homo[3:7, ]
+\end{alltt}
+\normalsize
+\end{column}
+\hfill
+\begin{column}{.48\textwidth}
+\textbf{dplyr}\\
+\scriptsize
+\begin{alltt}
+homo \alert{\%>\%}\\ 
+\ \ \ \alert{slice(}3:7\alert{)}
+\end{alltt}
+\normalsize
+\end{column}
+\end{columns}
+\hfill
+\scriptsize
+\begin{alltt}
+\# A tibble: 5 x 10\\
+\begin{tabular}{rrrrr}
+ & speaker & s.duration.ms & vowel.duration.ms & average.f0.Hz \\ 
+ & <fctr> & <dbl> & <dbl> & <dbl> \\ 
+1 & C & 55.08 & 126.81 & 114.90 \\ 
+2 & D & 78.11 & 119.17 & 126.61 \\ 
+3 & E & 64.71 & 93.68 & 130.76  \\ 
+4 & F & 67.00 & 127.87 & 150.79 \\ 
+5 & N & 57.67 & 118.02 & 121.48 \\ 
+\end{tabular}
+\\
+\# ... with 6 more variables: f0.range.Hz <dbl>,\\
+\#   perceived.as.homo <int>, perceived.as.hetero <int>,\\
+\#   perceived.as.homo.percent <dbl>, orientation <fctr>,\\
+\#   age <int>
+\end{alltt}
+\normalsize
+\hfill\\
+\end{frame}
+
+\section{подмножество столбцов}
+\begin{frame}{Подмножество столбцов по названию}
+\noindent Выделяет столбцы с информантов, ориентацией и возрастом.\\ \vfill
+\begin{columns}[T] 
+\begin{column}{.65\textwidth}
+\textbf{base R}\\
+\scriptsize
+\begin{alltt}
+cbind.data.frame(homo\$speaker, homo\$age)
+\end{alltt}
+\normalsize
+\end{column}
+\hfill
+\begin{column}{.29\textwidth}
+\textbf{dplyr}\\
+\scriptsize
+\begin{alltt}
+homo \alert{\%>\%}\\ 
+\ \ \ \alert{select(}speaker, age\alert{)}
+\end{alltt}
+\normalsize
+\end{column}
+\end{columns}
+\hfill
+\scriptsize
+\begin{alltt}
+\# A tibble: 14 x 2 \\
+\begin{tabular}{rrr}
+ & speaker & age \\ 
+ & <fctr> & <int> \\ 
+1 & A & 30 \\ 
+2 & B & 19 \\ 
+3 & C & 29 \\ 
+4 & D & 36 \\ 
+5 & E & 27 \\ 
+6 & F & 33 \\ 
+7 & G & 28 \\ 
+8 & H & 22 \\ 
+9 & I & 22 \\ 
+10 & J & 40 \\ 
+11 & K & 30 \\ 
+12 & L & 25 \\ 
+13 & M & 20 \\ 
+14 & N & 29 \\ 
+\end{tabular}
+\\
+\end{alltt}
+\normalsize
+\end{frame}
+
+\begin{frame}{Подмножество столбцов по номеру}
+\noindent Как выбрать столбцы под номером 8, 9, 10?\\ \vfill
+\begin{columns}[T] 
+\begin{column}{.48\textwidth}
+\textbf{base R}\\
+\scriptsize
+\begin{alltt}
+homo[, 8:10]
+\end{alltt}
+\normalsize
+\end{column}
+\hfill
+\begin{column}{.48\textwidth}
+\textbf{dplyr}\\
+\scriptsize
+\begin{alltt}
+homo \alert{\%>\%}\\ 
+\ \ \ \alert{select(}8:10\alert{)}
+\end{alltt}
+\normalsize
+\end{column}
+\end{columns}
+\hfill
+\scriptsize
+\begin{alltt}
+\# A tibble: 14 x 3\\
+\begin{tabular}{rrrr}
+ & perceived.as.homo.percent & orientation & age \\ 
+ & <dbl> & <fctr> & <int> \\ 
+1 & 0.28 & hetero & 30 \\ 
+2 & 0.80 & hetero & 19 \\ 
+3 & 0.36 & homo & 29 \\ 
+4 & 0.60 & homo & 36 \\ 
+5 & 0.40 & homo & 27 \\ 
+6 & 0.68 & homo & 33 \\ 
+7 & 0.80 & hetero & 28 \\ 
+8 & 0.84 & hetero & 22 \\ 
+9 & 0.80 & homo & 22 \\ 
+10 & 0.32 & homo & 40 \\ 
+11 & 0.84 & homo & 30 \\ 
+12 & 0.32 & hetero & 25 \\ 
+13 & 0.36 & hetero & 20 \\ 
+14 & 0.16 & hetero & 29 \\ 
+\end{tabular}
+\\
+\end{alltt}
+\normalsize
+\hfill\\
+\end{frame}
+
+\begin{frame}{Подмножество столбцов по названию}
+\noindent Выделяет столбцы от одного до другого.\\ \vfill
+\textbf{dplyr}\\
+\scriptsize
+\begin{alltt}
+homo \alert{\%>\%}\\ 
+\ \ \ \alert{select(speaker:average.f0.Hz)} \hfill \# можно комбинировать оба способа\\
+\end{alltt}
+\normalsize
+\hfill
+\scriptsize
+\begin{alltt}
+\# A tibble: 14 x 4 \\
+\begin{tabular}{rrrrr}
+ & speaker & s.duration.ms & vowel.duration.ms & average.f0.Hz \\ 
+ & <fctr> & <dbl> & <dbl> & <dbl> \\ 
+1 & A & 61.40 & 112.60 & 119.51 \\ 
+2 & B & 63.90 & 126.49 & 100.29 \\ 
+3 & C & 55.08 & 126.81 & 114.90 \\ 
+4 & D & 78.11 & 119.17 & 126.61 \\ 
+5 & E & 64.71 & 93.68 & 130.76 \\ 
+6 & F & 67.00 & 127.87 & 150.79 \\ 
+7 & G & 65.39 & 147.52 & 128.96 \\ 
+8 & H & 62.46 & 120.13 & 105.26 \\ 
+9 & I & 60.45 & 140.44 & 109.86 \\ 
+10 & J & 59.59 & 121.01 & 123.90 \\ 
+11 & K & 62.94 & 137.37 & 119.48 \\ 
+12 & L & 53.31 & 112.05 & 146.20 \\ 
+13 & M & 45.13 & 133.74 & 155.34 \\ 
+14 & N & 57.67 & 118.02 & 121.48 \\ 
+\end{tabular}
+\\
+\end{alltt}
+\normalsize
+\end{frame}
+\section{упорядочить строки}
+\begin{frame}{Упорядочить строки по значению столбцов}
+\noindent Упорядочивает строки сначала по ориентации, потом по возрасту.\\ \vfill
+\begin{columns}[T] 
+\begin{column}{.62\textwidth}
+\textbf{base R}\\
+\scriptsize
+\begin{alltt}
+homo[order(homo\$orientation, homo\$age), ]
+\end{alltt}
+\normalsize
+\end{column}
+\hfill
+\begin{column}{.37\textwidth}
+\textbf{dplyr}\\
+\scriptsize
+\begin{alltt}
+homo \alert{\%>\%}\\ 
+\ \ \ \alert{arrange(}orientation, age\alert{)}
+\end{alltt}
+\normalsize
+\end{column}
+\end{columns}
+\hfill
+\scriptsize
+\begin{alltt}
+\# A tibble: 14 x 3 \hfill \# выбраны только важные столбцы\\
+\begin{tabular}{rrrr}
+ & speaker & orientation & age \\ 
+ & <fctr> & <fctr> & <int> \\ 
+1 & B & hetero & 19 \\ 
+2 & M & hetero & 20 \\ 
+3 & H & hetero & 22 \\ 
+4 & L & hetero & 25 \\ 
+5 & G & hetero & 28 \\ 
+6 & N & hetero & 29 \\ 
+7 & A & hetero & 30 \\ 
+8 & I & homo & 22 \\ 
+9 & E & homo & 27 \\ 
+10 & C & homo & 29 \\ 
+11 & K & homo & 30 \\ 
+12 & F & homo & 33 \\ 
+13 & D & homo & 36 \\ 
+14 & J & homo & 40 \\ 
+\end{tabular}
+\\
+\end{alltt}
+\normalsize
+\hfill\\
+\end{frame}
+
+\begin{frame}{Упорядочить строки по значению столбцов}
+\noindent В обратном порядке.\\ \vfill
+\begin{columns}[T] 
+\begin{column}{.60\textwidth}
+\textbf{base R}\\
+\scriptsize
+\begin{alltt}
+homo[order(\alert{\textbf{-}}homo\$age), ]
+\end{alltt}
+\normalsize
+\end{column}
+\hfill
+\begin{column}{.37\textwidth}
+\textbf{dplyr}\\
+\scriptsize
+\begin{alltt}
+homo \alert{\%>\%}\\ 
+\ \ \ \alert{arrange(}\alert{desc(}age\alert{))}
+\end{alltt}
+\normalsize
+\end{column}
+\end{columns}
+\hfill
+\scriptsize
+\begin{alltt}
+\# A tibble: 14 x 2 \hfill \# выбран только важный столбец\\
+\begin{tabular}{rrr}
+ & speaker & age \\ 
+ & <fctr> & <int> \\ 
+1 & J & 40 \\ 
+2 & D & 36 \\ 
+3 & F & 33 \\ 
+4 & A & 30 \\ 
+5 & K & 30 \\ 
+6 & N & 29 \\ 
+7 & C & 29 \\ 
+8 & G & 28 \\ 
+9 & E & 27 \\ 
+10 & L & 25 \\ 
+11 & H & 22 \\ 
+12 & I & 22 \\ 
+13 & M & 20 \\ 
+14 & B & 19 \\ 
+\end{tabular}
+\\
+\end{alltt}
+\normalsize
+\hfill\\
+\end{frame}
+\section{уникальные комбинации}
+\begin{frame}{Уникальные комбинации строк}
+\noindent Уникальные значения строк в столбце ориентация:
+\begin{columns}[T] 
+\begin{column}{.62\textwidth}
+\textbf{base R}\\
+\scriptsize
+\begin{alltt}
+unique(homo\$orientation) \bigskip \\
+$\left[1\right]$ hetero homo \\
+Levels: hetero homo
+\end{alltt}
+\normalsize
+\end{column}
+\hfill
+\begin{column}{.37\textwidth}
+\textbf{dplyr}\\
+\scriptsize
+\begin{alltt}
+homo \alert{\%>\%}\\ 
+\ \ \ \alert{distinct(}orientation\alert{)} \bigskip\\
+\begin{tabular}{rrrr}
+& orientation\\
+1 & hetero\\
+2 & homo\\
+\end{tabular}
+\\
+\end{alltt}
+\normalsize
+\end{column}
+\end{columns}
+\end{frame}
+\begin{frame}{Уникальные комбинации строк}
+\noindent В случае, если хочется выбрать несколько столбцов, средства R становятся сложнее: \bigskip\\
+\textbf{base R}
+\scriptsize
+\begin{alltt}
+unique(homo[c("orientation", "perceived.as.homo")])\bigskip\\
+\end{alltt}
+\normalsize
+\textbf{dplyr}
+\scriptsize
+\begin{alltt}
+homo \alert{\%>\% }\\
+\ \ \ \alert{distinct(}orientation, perceived.as.homo\alert{)}
+\end{alltt}
+\normalsize
+\end{frame}
+\section{добавить столбец}
+\begin{frame}{Добавить и преобразовать столбцы}
+Добавяет столбцы c минимумом и максимом F0 каждого носителя:\bigskip\\
+\textbf{base R}
+\scriptsize
+\begin{alltt}
+homo\$f0.min <- homo\$average.f0.Hz – homo\$f0.range.Hz/2\\
+homo\$f0.max <- homo\$average.f0.Hz + homo\$f0.range.Hz/2
+\bigskip\\
+\end{alltt}
+\normalsize
+\textbf{dplyr}
+\scriptsize
+\begin{alltt}
+homo \alert{\%>\% }\\
+\ \ \ \alert{mutate(}\\
+\ \ \ \ \ \ f0.min = average.f0.Hz – f0.range.Hz/2, \\
+\ \ \ \ \ \ f0.max = average.f0.Hz + f0.range.Hz/2\alert{)}
+\end{alltt}
+\normalsize
+\end{frame}
+\begin{frame}{Добавить и преобразовать столбцы}
+\scriptsize
+\begin{alltt}
+\# A tibble: 14 x 3 \hfill \# выбраны только важные столбцы\\
+\begin{tabular}{rrrr}
+ & speaker & f0.min & f0.max \\ 
+ & <fctr> & <dbl> & <dbl> \\ 
+1 & A & 93.26 & 145.76 \\ 
+2 & B & 43.29 & 157.29 \\ 
+3 & C & 63.30 & 166.50 \\ 
+4 & D & 97.21 & 156.01 \\ 
+5 & E & 112.06 & 149.46 \\ 
+6 & F & 129.79 & 171.79 \\ 
+7 & G & 69.86 & 188.06 \\ 
+8 & H & 77.41 & 133.11 \\ 
+9 & I & 61.66 & 158.06 \\ 
+10 & J & 68.05 & 179.75 \\ 
+11 & K & 75.68 & 163.28 \\ 
+12 & L & 117.30 & 175.10 \\ 
+13 & M & 105.09 & 205.59 \\ 
+14 & N & 102.78 & 140.18 \\ 
+\end{tabular}
+\end{alltt}
+\normalsize
+\end{frame}
+\section{tidyr}
+\begin{frame}{tidyr}
+В основе пакета \scriptsize\verb"tidyr"\normalsize\ лежит понятие \textbf{Tidy Data}:
+\begin{itemize}
+\mytem каждая переменная — колонка
+\mytem каждое наблюдение — строчка
+\mytem все данные, связанные с одними тем же типом измерения, собраны в одну таблицу
+\end{itemize}
+Именно такой формат \textit{ожидают} большинство статистических функций и функций машинного обучения.
+\end{frame}
+\begin{frame}{tidyr}
+\textbf{df.short}\\
+\scriptsize
+\begin{alltt}
+\begin{tabular}{rrrrr}
+ & consonant & initial & intervocalic & final \\ 
+1 & stops & 123 & 57 & 30 \\ 
+2 & fricatives & 87 & 77 & 69 \\ 
+3 & affricates & 73 & 82 & 12 \\ 
+4 & nasals & 7 & 78 & 104 \\ 
+\end{tabular}
+\end{alltt}
+\normalsize
+\textbf{df.long}\\
+\scriptsize
+\begin{alltt}
+\begin{tabular}{rrrr}
+ & consonant & position & number \\ 
+1 & stops & initial & 123 \\ 
+2 & fricatives & initial & 87 \\ 
+3 & affricates & initial & 73 \\ 
+4 & nasals & initial & 7 \\ 
+5 & stops & intervocalic & 57 \\ 
+6 & fricatives & intervocalic & 77 \\ 
+7 & affricates & intervocalic & 82 \\ 
+8 & nasals & intervocalic & 78 \\ 
+9 & stops & final & 30 \\ 
+10 & fricatives & final & 69 \\ 
+11 & affricates & final & 12 \\ 
+12 & nasals & final & 104 \\ 
+\end{tabular}
+\end{alltt}
+\normalsize
+\end{frame}
+\begin{frame}[fragile]{Short format $\Leftrightarrow$ Long format:\\gather() and spread()}
+\scriptsize
+\begin{alltt}
+df.short <- data.frame(
+                            consonant = c("stops", "fricatives", "affricates", "nasals"),
+                            initial = c(123, 87, 73, 7),
+                            intervocal = c(57, 77, 82, 78),
+                            final = c(30, 69, 12, 104)) \bigskip
+\alert{library(tidyr)}
+df.long <- \hfill # short to long
+      df.short %>%
+      \alert{gather}(position, number, initial:final) \bigskip
+df.short<- \hfill # long to short
+      df.long %>%
+      \alert{spread}(position, number)
+\end{alltt}
+\normalsize
+\end{frame}
+\section{summarise и group\_by}
+\begin{frame}{Пакет dplyr: summarise и group\_by}
+Функция \scriptsize\verb"summarise()"\normalsize\ (или \scriptsize\texttt{summari\textbf{\alert{z}}e()}\normalsize) позволяет получить любые описательные статистики, которые доступны в R, в целом не отличается от них практически ничем.
+\scriptsize
+\begin{alltt}
+homo \%>\%\\
+\ \ \ \alert{summarise}(min(age), mean(s.duration.ms)) \bigskip\\
+\# A tibble: 1 x 2\\
+\begin{tabular}{rrr}
+&  min(age) & mean(s.duration.ms)\\
+&     <int>             &  <dbl>\\
+1  &     19  &          61.22429 \\
+\end{tabular}
+\end{alltt}
+\normalsize
+\end{frame}
+\begin{frame}{Пакет dplyr: summarise и group\_by}
+В сочетании с командой \scriptsize\verb"group\_by()"\normalsize, которая группирует данные по какому-то параметру/параметрам, данная функция становится мощным инструментом.
+\begin{columns}[T] 
+\begin{column}{.38\textwidth}
+\scriptsize
+\begin{alltt}
+homo \%>\%\\
+\ \ \ \alert{group\_by}(orientation) \\
+\ \ \ \alert{summarise}(count = n())\\
+\# A tibble: 2 x 2\\
+\begin{tabular}{rrr}
+&  orientation & count\\
+&     <fctr>             &  <int>\\
+1  &     hetero  &         7\\
+2  &     homo &          7\\
+\end{tabular}
+\end{alltt}
+\end{column}
+\hfill
+\begin{column}{.58\textwidth}
+\scriptsize
+\begin{alltt}
+homo \%>\%\\
+\ \ \ \alert{group\_by}(orientation) \\
+\ \ \ \alert{summarise}(mean(s.duration.ms))\\
+\# A tibble: 2 x 2\\
+\begin{tabular}{rrr}
+&  orientation & mean(s.duration.ms)\\
+&     <fctr>             &  <dbl>\\
+1  &     hetero  &         58.46571\\
+2  &     homo &          63.98286\\
+\end{tabular}
+\end{alltt}
+\normalsize
+\end{column}
+\end{columns}
+\vfill
+В \textbf{base R} подобное можно сделать при помощи функции \scriptsize\verb"aggregate()"\normalsize:
+\scriptsize
+\begin{alltt}
+\alert{aggregate}(speaker\textasciitilde orientation, length, data = homo)
+\end{alltt}
+\normalsize
+\end{frame}
+\section{}
+\begin{frame}
+{\huge Спасибо за внимание!\bigskip\\
+\normalsize Пишите письма\\
+agricolamz@gmail.com
+\vspace{-130pt}}
+\end{frame}
+\end{document}
