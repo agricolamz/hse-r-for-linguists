@@ -1,0 +1,272 @@
+\input{pre}
+   \newcommand{\code}[1]{\scriptsize \texttt{#1}\normalsize}
+   \newcommand{\codel}[1]{\scriptsize \begin{alltt} #1 \end{alltt} \normalsize}   
+\setbeamercolor{alerted text}{fg=blue}
+\setbeamersize{text margin left=4mm,text margin right=1mm} 
+\setbeamertemplate{navigation symbols}{
+	\usebeamerfont{footline}%
+    \usebeamercolor[fg]{footline}%
+    \hspace{1em}%
+    {{\small презентация доступна: \href{}{\textbf{}}}
+    \hspace{40mm}
+    \insertframenumber/\inserttotalframenumber\vspace{0.5mm}}}
+% начало
+\title[]{Визуализация данных:\\ базовые функции R и пакет \small\texttt{ggplot2}\normalsize}
+\author[]{Г. Мороз}
+\date{}
+\begin{document}
+\frame{\titlepage}
+\section{введение}
+\begin{frame}{R для визуализации? Совсем не обязательно\dots}
+Взято \href{http://czrt.by/notes/dataviz-tools.html}{{\color{red!13!blue}{отсюда}}}. Куча ресурсов, которые скоро устареют.
+\begin{multicols}{3}
+\scriptsize
+\begin{itemize}
+{\color{red!13!blue}{\item[\texttt{\symbol{"1F63C}}] \href{http://matplotlib.org/}{\large Matplotlib}}}
+{\color{red!13!blue}{\item[\texttt{\symbol{"1F63C}}] \href{http://bokeh.pydata.org/en/latest/}{\large Bokeh}}}
+\mytem \href{http://www.anychart.com/}{AnyChart}
+\mytem \href{http://www.onlinecharttool.com/}{Chart Tool}
+\mytem \href{http://www.chartjs.org/}{Chart.js}
+\mytem \href{http://texty.org.ua/mod/datavis/apps/charts/}{Chartbuilder}
+\mytem \href{http://quartz.github.io/Chartbuilder/}{Chartbuilder 2.0}
+\mytem \href{http://chartgo.com/}{ChartGo}
+\mytem \href{https://github.com/chiasm-project/chiasm}{Chiasm}
+\mytem \href{http://d3plus.org/}{D3plus}
+\mytem \href{https://datahero.com/}{Datahero}
+\mytem \href{http://datamatic.io/}{Datamatic}
+\mytem \href{http://datavisu.al/}{Datavisual}
+\mytem \href{https://datawrapper.de/}{Datawrapper}
+\mytem \href{http://www.duarte.com/diagrammer/}{Diagrammer}
+\mytem \href{http://www.diychart.com/}{Diychart}
+\mytem \href{http://dygraphs.com/}{Dygraphs}
+\mytem \href{http://echarts.baidu.com/}{Echarts}
+\mytem \href{http://www.humblesoftware.com/envision}{Envision.js}
+\mytem \href{https://filtergraph.com/}{filtergraph}
+\mytem \href{http://flare.prefuse.org/}{Flare}
+\mytem \href{https://developers.google.com/chart/}{Google Charts}
+\mytem \href{http://www.highcharts.com/}{Highcharts}
+\mytem \href{http://icharts.net/}{iCharts}
+\mytem \href{https://infogr.am/}{Infogr.am}
+\mytem \href{http://www.jscharts.com/}{JS Charts}
+\mytem \href{http://philogb.github.io/jit/}{JavaScript InfoVis Toolkit}
+\mytem \href{http://charts.livegap.com/}{Livegap Charts}
+\mytem \href{http://idl.cs.washington.edu/projects/lyra/}{Lyra}
+\mytem \href{https://plot.ly/}{Plotly}
+\item[\texttt{\symbol{"1F63C}}] \href{https://processing.org/}{{\color{red!13!blue}{\large Processing}}}
+\mytem \href{http://www.qlik.com/}{Qlik}
+\mytem \href{http://raw.densitydesign.org/}{Raw}
+\mytem \href{http://go.sap.com/product/analytics/lumira.html}{Lumira}
+\mytem \href{https://slemma.com/}{Slemma}
+\mytem \href{http://spotfire.tibco.com/five-ways-to-speed-up-data-analysis}{Spotfire}
+\mytem \href{https://spritesapp.com/}{Sprites}
+\mytem \href{http://www.tableau.com/}{Tableau}
+\mytem \href{http://www.dataviz.org/}{VIDI}
+\mytem \href{http://vega.github.io/vega/}{Vega}
+\mytem \href{http://visage.co/}{Visage}
+\mytem \href{https://vizydrop.com/}{Vizydrop}
+\mytem \href{http://www.oicweave.org/}{Weave}
+\mytem \href{http://www.zingchart.com/}{Zingchart}
+\end{itemize}
+\end{multicols}
+\end{frame}
+
+\begin{frame}{Элементы визуализации}
+\begin{itemize}
+\mytem система координат
+\end{itemize}
+\begin{center}
+\includegraphics[width=0.3\linewidth]{003-ggplots-coord-1.pdf}\hfill
+\includegraphics[width=0.3\linewidth]{003-ggplots-coord-2.pdf}\hfill
+\includegraphics[width=0.2\linewidth]{003-saggital-slice.pdf}\\ \vspace{-25mm}
+\resizebox{0.8\linewidth}{!}{\input{003-maps-rus}}
+\end{center}
+\end{frame}
+
+\begin{frame}{Элементы визуализации}
+\begin{itemize}
+\mytem позиция
+\mytem длина
+\mytem форма
+\mytem угол
+\mytem направление
+\mytem размер
+\mytem цвет
+\mytem \dots
+\end{itemize}
+\end{frame}
+\begin{frame}{Данные}
+В данной презентации все примеры будут приводиться на примере датасета из работы [Chi-kuk 2007] (доступна по ссылке http://goo.gl/Zjr9aF). В работе исследовались речь 7 гомосексуальных и 7 гетеросексуальных носителей кантонского диалекта языка юэ. В датасете есть следующие переменные:
+\begin{itemize}
+\mytem долгота s (s.duration.ms)
+\mytem долгота гласных (vowel.duration.ms)
+\mytem среднее значении ЧОТ (average.f0.Hz)
+\mytem диапозон ЧОТ (f0.range.Hz)
+\mytem сколько носителей воспринимает говорящего как гомосексуалa (perceived.as.homo)
+\mytem сколько носителей воспринимает говорящего как гетеросексуалa (perceived.as.hetero)
+\mytem ориентация говорящего (orientation)
+\mytem возраст говорящего (age)
+\end{itemize}
+\end{frame}
+\begin{frame}
+В R визуализация реализована по-разному:
+\begin{itemize}
+\item core R (всегда будет слева)
+\item библиотекой \code{ggplot2} (всегда будет справа)
+\end{itemize}
+Все примеры \code{ggplot2} в данной презентации реализованы в связке с пакетом \code{dplyr}. Так что, для того чтобы код из данной презентации работал следует включить библиотеки и скачать датасет:
+\codel{
+library(ggplot2)\\
+library(dplyr)\\
+chi.kuk <- read.csv("http://goo.gl/Zjr9aF") \hfill \# закачивает датасет}
+\end{frame}
+\section{2 переменные}
+\subsection{колич+колич}
+\begin{frame}{scaterplot}
+\includegraphics[width=0.49\linewidth]{007-base-scaterplot.pdf}~
+\includegraphics[width=0.49\linewidth]{007-ggplot-scaterplot.pdf}
+\codel{
+\# base R\\
+plot(chi.kuk\$s.duration.ms, chi.kuk\$vowel.duration.ms)\bigskip\\
+\# dplyr, ggplot2\\
+chi.kuk \%>\% \\
+\ \ \ ggplot(aes(s.duration.ms, vowel.duration.ms)) +\\
+\ \ \ geom\_point()\\
+}
+\end{frame}
+\begin{frame}{scaterplot: цвет}
+\includegraphics[width=0.49\linewidth]{008-base-scaterplot-color.pdf}~
+\includegraphics[width=0.49\linewidth]{008-ggplot-scaterplot-color.pdf}
+\codel{
+\# base R\\
+plot(chi.kuk\$s.duration.ms, chi.kuk\$vowel.duration.ms,\\
+\ \ \ \alert{col = c("red"{}, "blue")[as.numeric(chi.kuk\$orientation)])})\bigskip\\
+\# dplyr, ggplot2\\
+chi.kuk \%>\% \\
+\ \ \ ggplot(aes(s.duration.ms, vowel.duration.ms, \alert{color = orientation})) +\\
+\ \ \ geom\_point()\\
+}
+\end{frame}
+\begin{frame}{scaterplot: форма}
+\includegraphics[width=0.49\linewidth]{009-base-scaterplot-shape.pdf}~
+\includegraphics[width=0.49\linewidth]{009-ggplot-scaterplot-shape.pdf}
+\codel{
+\# base R\\
+plot(chi.kuk\$s.duration.ms, chi.kuk\$vowel.duration.ms,\\
+\ \ \ \alert{pch = c(16, 17)[as.numeric(chi.kuk\$orientation)])})\bigskip\\
+\# dplyr, ggplot2\\
+chi.kuk \%>\% \\
+\ \ \ ggplot(aes(s.duration.ms, vowel.duration.ms, \alert{shape = orientation})) +\\
+\ \ \ geom\_point()\\
+}
+\end{frame}
+\begin{frame}{scaterplot: размер}
+\includegraphics[width=0.49\linewidth]{010-base-scaterplot-size.pdf}~
+\includegraphics[width=0.49\linewidth]{010-ggplot-scaterplot-size.pdf}
+\codel{
+\# base R\\
+plot(chi.kuk\$s.duration.ms, chi.kuk\$vowel.duration.ms,\\
+\ \ \ \alert{cex = chi.kuk\$age/20})\bigskip\\
+\# dplyr, ggplot2\\
+chi.kuk \%>\% \\
+\ \ \ ggplot(aes(s.duration.ms, vowel.duration.ms, \alert{color = orientation})) +\\
+\ \ \ geom\_point()\\
+}
+\end{frame}
+\begin{frame}{scaterplot: текст}
+\includegraphics[width=0.49\linewidth]{011-base-scaterplot-text.pdf}~
+\includegraphics[width=0.49\linewidth]{011-ggplot-scaterplot-text.pdf}
+\codel{
+\# base R\\
+plot(chi.kuk\$s.duration.ms, chi.kuk\$vowel.duration.ms,\\
+\ \ \ \alert{pch = c("⚤"{}, "⚣")[as.numeric(chi.kuk\$orientation)])})\bigskip\\
+\# dplyr, ggplot2\\
+\alert{levels(chi.kuk\$orientation) <- list("homo"{}="⚣"{}, "hetero"{}="⚤")\\}
+chi.kuk \%>\% \\
+\ \ \ ggplot(aes(s.duration.ms, vowel.duration.ms, \alert{label = orientation})) +\\
+\ \ \ \alert{geom\_text()}\\
+}
+\end{frame}
+\begin{frame}{scaterplot: заголовок}
+\includegraphics[width=0.49\linewidth]{012-base-scaterplot-title.pdf}~
+\includegraphics[width=0.49\linewidth]{012-ggplot-scaterplot-title.pdf}
+\codel{
+\# base R\\
+plot(chi.kuk\$s.duration.ms, chi.kuk\$vowel.duration.ms,\\
+\ \ \ \alert{main = "длина [s] vs. долгота гласного"})\bigskip\\
+\# dplyr, ggplot2\\
+chi.kuk \%>\% \\
+\ \ \ ggplot(aes(s.duration.ms, vowel.duration.ms)) +\\
+\ \ \ geom\_point() +\\
+\ \ \ \alert{ggtitle("длина [s] vs. долгота гласного")} \\
+}
+\end{frame}
+\begin{frame}{scaterplot: подписи осей}
+\includegraphics[width=0.49\linewidth]{013-base-scaterplot-axes.pdf}~
+\includegraphics[width=0.49\linewidth]{013-ggplot-scaterplot-axes.pdf}
+\codel{
+\# base R\\
+plot(chi.kuk\$s.duration.ms, chi.kuk\$vowel.duration.ms,\\
+\ \ \ \alert{xlab = "длина [s]", ylab = "долгота гласного"})\bigskip\\
+\# dplyr, ggplot2\\
+chi.kuk \%>\% \\
+\ \ \ ggplot(aes(s.duration.ms, vowel.duration.ms)) +\\
+\ \ \ geom\_point() +\\
+\ \ \ \alert{xlab("длина [s]")+\\
+\ \ \ ylab("долгота гласного")} 
+}
+\end{frame}
+\begin{frame}
+\includegraphics[width=\linewidth]{014-log-scales.png}
+\end{frame}
+\begin{frame}{scaterplot: логарифмирование осей}
+Воспользуемся частотным словарем [Ляшевская, Шаров 2009] (топ-50000 лемм СЛРЯ) и посмотрим на параметр частоты слова (Freq.imp., среднее на миллион словоупотреблений).
+\
+\codel{
+freq <- read.csv("https://goo.gl/TlX7xW"{}, sep = "\textbackslash t")\\}
+Если оси не логарифмировать, то получится следующее:
+\begin{multicols}{2}
+\codel{
+freq \%>\% \\
+\ \ \ ggplot(aes(1:52138, Freq.ipm.)) +\\
+\ \ \ geom\_point() +\\
+\ \ \ xlab("{}") +\\
+\ \ \ ylab("ipm") 
+\columnbreak\\
+\includegraphics[width=\linewidth]{015-log-scales.pdf}
+}
+\end{multicols}
+\end{frame}
+\begin{frame}{scaterplot: логарифмирование осей}
+\includegraphics[width=0.49\linewidth]{016-base-scaterplot-log.pdf}~
+\includegraphics[width=0.49\linewidth]{016-ggplot-scaterplot-log.pdf}
+\codel{
+\# base R\\
+plot(1:52138, freq\$Freq.ipm.,\\
+\ \ \ xlab = NA, ylab = "ipm"{},\\
+\ \ \ \alert{las = 1, \hfill \# поворот значений на оси y\\
+\ \ \ log = "y"})\bigskip\\
+\# dplyr, ggplot2\\
+freq \%>\% \\
+\ \ \ ggplot(aes(1:52138, Freq.ipm.))+\\
+\ \ \ geom\_point()+\\
+\ \ \ xlab("{}")+\\
+\ \ \ ylab("ipm")+\\
+\ \ \ \alert{scale\_y\_log10()} 
+}
+\end{frame}
+\subsection{колич+катег}
+\section{1 переменная}
+\subsection{количественная}
+\subsection{категориальная}
+\section{3 переменные}
+\subsection{колич+колич+колич}
+
+\section{фасетизация}
+\section{}
+\begin{frame}
+{\huge Спасибо что долистали!\bigskip\\
+\normalsize Пишите письма\\
+agricolamz@gmail.com
+\vspace{-130pt}}
+\end{frame}
+\end{document}
