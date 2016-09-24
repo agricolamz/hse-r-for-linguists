@@ -5,7 +5,7 @@
 	\usebeamerfont{footline}%
     \usebeamercolor[fg]{footline}%
     \hspace{1em}%
-    {{\small презентация доступна: \href{http://1drv.ms/1PMoiZj}{\textbf{http://1drv.ms/1PMoiZj}}}
+    {{\small презентация доступна: \href{https://goo.gl/QRCtyw}{\textbf{https://goo.gl/QRCtyw}}}
     \hspace{40mm}
     \insertframenumber/\inserttotalframenumber\vspace{0.5mm}}}
 % начало
@@ -47,7 +47,7 @@
 \section{чтение}
 \begin{frame}[fragile]{Чтение файлов?}
 \begin{itemize}
-\mytem z <- read.table("a.csv", sep = "\dots") \hfill \# текст и разделители
+\mytem z <- read.table("a.csv"{}, sep = "\dots") \hfill \# текст и разделители
 \mytem y <- read.csv("b.txt") \hfill \# разделитель "{},{}"
 \mytem x <- read.csv2("c.csv") \hfill \# разделитель ";"
 \mytem w <- read.delim("d.txt") \hfill \# разделитель "\textbackslash t"
@@ -79,28 +79,28 @@
 \end{alltt}
 \normalsize
 \vfill
-\mytem paste({\color{red!13!blue}{"F"{}}}, {\color{red!27!green}{letters[1-5]}}, sep = "{}"{}) \hfill \# векторы разной длины
+\mytem paste({\color{red!13!blue}{"F"{}}}, {\color{red!27!green}{letters[1:5]}}, sep = "{}"{}) \hfill \# векторы разной длины
 \footnotesize
 \begin{alltt}
 [1] "{\color{red!13!blue}{F}}{\color{red!27!green}{a}}{}" "{\color{red!13!blue}{F}}{\color{red!27!green}{b}}{}" "{\color{red!13!blue}{F}}{\color{red!27!green}{c}}{}" "{\color{red!13!blue}{F}}{\color{red!27!green}{d}}{}" "{\color{red!13!blue}{F}}{\color{red!27!green}{e}}{}"
 \end{alltt}
 \normalsize
 \vfill
-\mytem paste({\color{red!13!blue}{"F"{}}}, letters[1-5], sep = "{}"{}, collapse = "{ }"{}) \hfill \# в один вектор
+\mytem paste({\color{red!13!blue}{"F"{}}}, letters[1:5], sep = "{}"{}, collapse = "{ }"{}) \hfill \# в один вектор
 \footnotesize
 \begin{alltt}
 [1] "{\color{red!13!blue}{F}}{\color{red!27!green}{a}} {\color{red!13!blue}{F}}{\color{red!27!green}{b}} {\color{red!13!blue}{F}}{\color{red!27!green}{c}} {\color{red!13!blue}{F}}{\color{red!27!green}{d}} {\color{red!13!blue}{F}}{\color{red!27!green}{e}}{}"
 \end{alltt}
 \normalsize
 \vfill
-\mytem paste({\color{red!13!blue}{"F"{}}}, {\color{red!27!green}{letters[1-5]}}, sep = "{}"{}, collapse = "{}-{}"{}) \hfill \# другой разделитель
+\mytem paste({\color{red!13!blue}{"F"{}}}, {\color{red!27!green}{letters[1:5]}}, sep = "{}"{}, collapse = "{}-{}"{}) \hfill \# другой разделитель
 \footnotesize
 \begin{alltt}
 [1] "{\color{red!13!blue}{F}}{\color{red!27!green}{a}}-{\color{red!13!blue}{F}}{\color{red!27!green}{b}}-{\color{red!13!blue}{F}}{\color{red!27!green}{c}}-{\color{red!13!blue}{F}}{\color{red!27!green}{d}}-{\color{red!13!blue}{F}}{\color{red!27!green}{e}}{}"
 \end{alltt}
 \normalsize
 \vfill
-\mytem paste(c({\color{red!13!blue}{"F"{}}}, {\color{red!27!green}{letters[1-5]}}), collapse = "{}-{}"{}) \hfill \# развекторизовать
+\mytem paste(c({\color{red!13!blue}{"F"{}}}, {\color{red!27!green}{letters[1:5]}}), collapse = "{}-{}"{}) \hfill \# развекторизовать
 \footnotesize
 \begin{alltt}
 [1] "{\color{red!13!blue}{F}}-{\color{red!27!green}{a}}-{\color{red!27!green}{b}}-{\color{red!27!green}{c}}-{\color{red!27!green}{d}}-{\color{red!27!green}{e}}{}"
@@ -130,28 +130,28 @@
 \end{alltt}
 \normalsize
 \vfill
-\mytem str\_c({\color{red!13!blue}{"F"{}}}, {\color{red!27!green}{letters[1-5]}}, sep = "{}"{}) \hfill \# векторы разной длины
+\mytem str\_c({\color{red!13!blue}{"F"{}}}, {\color{red!27!green}{letters[1:5]}}, sep = "{}"{}) \hfill \# векторы разной длины
 \footnotesize
 \begin{alltt}
 [1] "{\color{red!13!blue}{F}}{\color{red!27!green}{a}}{}" "{\color{red!13!blue}{F}}{\color{red!27!green}{b}}{}" "{\color{red!13!blue}{F}}{\color{red!27!green}{c}}{}" "{\color{red!13!blue}{F}}{\color{red!27!green}{d}}{}" "{\color{red!13!blue}{F}}{\color{red!27!green}{e}}{}"
 \end{alltt}
 \normalsize
 \vfill
-\mytem str\_c({\color{red!13!blue}{"F"{}}}, letters[1-5], sep = "{}"{}, collapse = "{ }"{}) \hfill \# в один вектор
+\mytem str\_c({\color{red!13!blue}{"F"{}}}, letters[1:5], sep = "{}"{}, collapse = "{ }"{}) \hfill \# в один вектор
 \footnotesize
 \begin{alltt}
 [1] "{\color{red!13!blue}{F}}{\color{red!27!green}{a}} {\color{red!13!blue}{F}}{\color{red!27!green}{b}} {\color{red!13!blue}{F}}{\color{red!27!green}{c}} {\color{red!13!blue}{F}}{\color{red!27!green}{d}} {\color{red!13!blue}{F}}{\color{red!27!green}{e}}{}"
 \end{alltt}
 \normalsize
 \vfill
-\mytem str\_c({\color{red!13!blue}{"F"{}}}, {\color{red!27!green}{letters[1-5]}}, sep = "{}"{}, collapse = "{}-{}"{}) \hfill \# другой разделитель
+\mytem str\_c({\color{red!13!blue}{"F"{}}}, {\color{red!27!green}{letters[1:5]}}, sep = "{}"{}, collapse = "{}-{}"{}) \hfill \# другой разделитель
 \footnotesize
 \begin{alltt}
 [1] "{\color{red!13!blue}{F}}{\color{red!27!green}{a}}-{\color{red!13!blue}{F}}{\color{red!27!green}{b}}-{\color{red!13!blue}{F}}{\color{red!27!green}{c}}-{\color{red!13!blue}{F}}{\color{red!27!green}{d}}-{\color{red!13!blue}{F}}{\color{red!27!green}{e}}{}"
 \end{alltt}
 \normalsize
 \vfill
-\mytem str\_c(c({\color{red!13!blue}{"F"{}}}, {\color{red!27!green}{letters[1-5]}}), collapse = "{}-{}"{}) \hfill \# развекторизовать
+\mytem str\_c(c({\color{red!13!blue}{"F"{}}}, {\color{red!27!green}{letters[1:5]}}), collapse = "{}-{}"{}) \hfill \# развекторизовать
 \footnotesize
 \begin{alltt}
 [1] "{\color{red!13!blue}{F}}-{\color{red!27!green}{a}}-{\color{red!27!green}{b}}-{\color{red!27!green}{c}}-{\color{red!27!green}{d}}-{\color{red!27!green}{e}}{}"
@@ -488,7 +488,7 @@ b <- c("jumps"{}, "over"{}, "the"{}, "lazy"{}, "dog"{})
 [1] TRUE FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE
 \end{alltt}
 \normalsize
-\mytem c(a,b)[str\_detect("the", c(a, b))] \hfill элемент, содержащий подстроку
+\mytem c(a,b)[str\_detect("the"{}, c(a, b))] \hfill элемент, содержащий подстроку
 \scriptsize
 \begin{alltt}
 [1] "the" "the"
