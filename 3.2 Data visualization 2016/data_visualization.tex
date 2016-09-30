@@ -70,7 +70,7 @@
 \end{multicols}
 \end{frame}
 
-\begin{frame}{Элементы визуализации}
+\begin{frame}{элементы визуализации}
 \begin{itemize}
 \mytem система координат
 \end{itemize}
@@ -82,7 +82,7 @@
 \end{center}
 \end{frame}
 
-\begin{frame}{Элементы визуализации}
+\begin{frame}{элементы визуализации}
 \begin{itemize}
 \mytem позиция
 \mytem длина
@@ -93,6 +93,60 @@
 \mytem цвет
 \mytem \dots
 \end{itemize}
+\end{frame}
+\begin{frame}{Anscombe's quartet}
+В работе Anscombe, F. J. (1973). "Graphs in Statistical Analysis"\ был представлен следующий набор данных:\\
+\codel{
+quartet <- read.csv("https://goo.gl/KHQLZI")\\
+head(quartet)\\
+\begin{tabular}{rrrrrrrrr}
+ & X1 & Y1 & X2 & Y2 & X3 & Y3 & X4 & Y4 \\ 
+1 & 10 & 8.04 & 10 & 9.14 & 10 & 7.46 & 8 & 6.58 \\ 
+2 & 8 & 6.95 & 8 & 8.14 & 8 & 6.77 & 8 & 5.76 \\ 
+3 & 13 & 7.58 & 13 & 8.74 & 13 & 12.74 & 8 & 7.71 \\ 
+4 & 9 & 8.81 & 9 & 8.77 & 9 & 7.11 & 8 & 8.84 \\ 
+5 & 11 & 8.33 & 11 & 9.26 & 11 & 7.81 & 8 & 8.47 \\ 
+6 & 14 & 9.96 & 14 & 8.10 & 14 & 8.84 & 8 & 7.04 \\ 
+\end{tabular}}
+\end{frame}
+\begin{frame}{Anscombe's quartet: cтатистика}
+\codel{
+\alert{sapply(quartet[, 1:4*2-1], mean)} \hfill                 \# mean of x\\
+\begin{tabular}{rrrr}
+ X1 & X2 & X3 & X4 \\ 
+9 & 9 & 9 & 9\\
+\end{tabular} \medskip\\
+\alert{sapply(quartet[, 1:4*2], mean)}     \hfill               \# mean of y\\
+\begin{tabular}{rrrr}
+      Y1    &   Y2  &     Y3  &     Y4 \\
+7.500909 & 7.500909 & 7.500000 & 7.500909\\
+\end{tabular} \medskip\\
+\alert{sapply(quartet[, 1:4*2-1], sd)}        \hfill           \# sd of x\\
+\begin{tabular}{rrrr}
+      X1  &     X2  &     X3  &     X4 \\
+3.316625 & 3.316625 & 3.316625 & 3.316625 \\
+\end{tabular} \medskip\\
+\alert{sapply(quartet[, 1:4*2], sd)}        \hfill              \# sd of y\\
+\begin{tabular}{rrrr}
+      Y1    &   Y2  &     Y3  &     Y4 \\
+2.031568 & 2.031657 & 2.030424 & 2.030579 \\
+\end{tabular} \medskip\\
+\alert {mapply(cor, quartet[, 1:4*2-1], quartet[, 1:4*2])} \hfill \# correlation\\
+\begin{tabular}{rrrr}
+       X1   &     X2  &      X3  &      X4 \\
+0.8164205 & 0.8162365 & 0.8162867 & 0.8165214 \\
+\end{tabular} \medskip\\
+\alert {mapply(function(x, y) lm(y~x)\$coefficients, }  \hfill    \# linear regression\\
+\alert{       quartet[, 1:4*2-1], quartet[, 1:4*2]) }   \\
+\begin{tabular}{rrrrr}
+&                   X1 &      X2  &      X3  &      X4\\
+(Intercept) & 3.0000909 & 3.000909  & 3.0024545 & 3.0017273 \\
+x &           0.5000909 & 0.500000 & 0.4997273 & 0.4999091\\
+\end{tabular} \medskip\\
+}
+\end{frame}
+\begin{frame}{Anscombe's quartet: cтатистика}
+\includegraphics[width=\linewidth]{007-Anscombe-quartet.pdf}
 \end{frame}
 \begin{frame}{Данные}
 В данной презентации все примеры будут приводиться на примере датасета из работы [Chi-kuk 2007] (доступна по ссылке http://goo.gl/Zjr9aF). В работе исследовались речь 7 гомосексуальных и 7 гетеросексуальных носителей кантонского диалекта языка юэ. В датасете есть следующие переменные:
@@ -112,6 +166,7 @@
 \begin{itemize}
 \item core R (всегда будет слева)
 \item библиотекой \code{ggplot2} (всегда будет справа)
+\item библиотекой \code{lattice} (в данной презентации не используется)
 \end{itemize}
 Все примеры \code{ggplot2} в данной презентации реализованы в связке с пакетом \code{dplyr}. Так что, для того чтобы код из данной презентации работал следует включить библиотеки и скачать датасет:
 \codel{
@@ -120,10 +175,10 @@ library(dplyr)\\
 chi.kuk <- read.csv("http://goo.gl/Zjr9aF") \hfill \# закачивает датасет}
 \end{frame}
 \section{2 переменные}
-\subsection{колич+колич}
+\subsection{scaterplot}
 \begin{frame}{scaterplot}
-\includegraphics[width=0.49\linewidth]{007-base-scaterplot.pdf}~
-\includegraphics[width=0.49\linewidth]{007-ggplot-scaterplot.pdf}
+\includegraphics[width=0.49\linewidth]{010-base-scaterplot.pdf}~
+\includegraphics[width=0.49\linewidth]{010-ggplot-scaterplot.pdf}
 \codel{
 \# base R\\
 plot(chi.kuk\$s.duration.ms, chi.kuk\$vowel.duration.ms)\bigskip\\
@@ -134,12 +189,12 @@ chi.kuk \%>\% \\
 }
 \end{frame}
 \begin{frame}{scaterplot: цвет}
-\includegraphics[width=0.49\linewidth]{008-base-scaterplot-color.pdf}~
-\includegraphics[width=0.49\linewidth]{008-ggplot-scaterplot-color.pdf}
+\includegraphics[width=0.49\linewidth]{011-base-scaterplot-color.pdf}~
+\includegraphics[width=0.49\linewidth]{011-ggplot-scaterplot-color.pdf}
 \codel{
 \# base R\\
 plot(chi.kuk\$s.duration.ms, chi.kuk\$vowel.duration.ms,\\
-\ \ \ \alert{col = c("red"{}, "blue")[as.numeric(chi.kuk\$orientation)])})\bigskip\\
+\ \ \ \alert{col = c("red"{}, "blue")[chi.kuk\$orientation])})\bigskip\\
 \# dplyr, ggplot2\\
 chi.kuk \%>\% \\
 \ \ \ ggplot(aes(s.duration.ms, vowel.duration.ms, \alert{color = orientation})) +\\
@@ -147,12 +202,12 @@ chi.kuk \%>\% \\
 }
 \end{frame}
 \begin{frame}{scaterplot: форма}
-\includegraphics[width=0.49\linewidth]{009-base-scaterplot-shape.pdf}~
-\includegraphics[width=0.49\linewidth]{009-ggplot-scaterplot-shape.pdf}
+\includegraphics[width=0.49\linewidth]{012-base-scaterplot-shape.pdf}~
+\includegraphics[width=0.49\linewidth]{012-ggplot-scaterplot-shape.pdf}
 \codel{
 \# base R\\
 plot(chi.kuk\$s.duration.ms, chi.kuk\$vowel.duration.ms,\\
-\ \ \ \alert{pch = c(16, 17)[as.numeric(chi.kuk\$orientation)])})\bigskip\\
+\ \ \ \alert{pch = c(16, 17)[chi.kuk\$orientation])})\bigskip\\
 \# dplyr, ggplot2\\
 chi.kuk \%>\% \\
 \ \ \ ggplot(aes(s.duration.ms, vowel.duration.ms, \alert{shape = orientation})) +\\
@@ -160,25 +215,25 @@ chi.kuk \%>\% \\
 }
 \end{frame}
 \begin{frame}{scaterplot: размер}
-\includegraphics[width=0.49\linewidth]{010-base-scaterplot-size.pdf}~
-\includegraphics[width=0.49\linewidth]{010-ggplot-scaterplot-size.pdf}
+\includegraphics[width=0.49\linewidth]{013-base-scaterplot-size.pdf}~
+\includegraphics[width=0.49\linewidth]{013-ggplot-scaterplot-size.pdf}
 \codel{
 \# base R\\
 plot(chi.kuk\$s.duration.ms, chi.kuk\$vowel.duration.ms,\\
 \ \ \ \alert{cex = chi.kuk\$age/20})\bigskip\\
 \# dplyr, ggplot2\\
 chi.kuk \%>\% \\
-\ \ \ ggplot(aes(s.duration.ms, vowel.duration.ms, \alert{color = orientation})) +\\
+\ \ \ ggplot(aes(s.duration.ms, vowel.duration.ms, \alert{size = orientation})) +\\
 \ \ \ geom\_point()\\
 }
 \end{frame}
 \begin{frame}{scaterplot: текст}
-\includegraphics[width=0.49\linewidth]{011-base-scaterplot-text.pdf}~
-\includegraphics[width=0.49\linewidth]{011-ggplot-scaterplot-text.pdf}
+\includegraphics[width=0.49\linewidth]{014-base-scaterplot-text.pdf}~
+\includegraphics[width=0.49\linewidth]{014-ggplot-scaterplot-text.pdf}
 \codel{
 \# base R\\
 plot(chi.kuk\$s.duration.ms, chi.kuk\$vowel.duration.ms,\\
-\ \ \ \alert{pch = c("⚤"{}, "⚣")[as.numeric(chi.kuk\$orientation)])})\bigskip\\
+\ \ \ \alert{pch = c("⚤"{}, "⚣")[chi.kuk\$orientation])})\bigskip\\
 \# dplyr, ggplot2\\
 \alert{levels(chi.kuk\$orientation) <- list("homo"{}="⚣"{}, "hetero"{}="⚤")\\}
 chi.kuk \%>\% \\
@@ -187,8 +242,8 @@ chi.kuk \%>\% \\
 }
 \end{frame}
 \begin{frame}{scaterplot: заголовок}
-\includegraphics[width=0.49\linewidth]{012-base-scaterplot-title.pdf}~
-\includegraphics[width=0.49\linewidth]{012-ggplot-scaterplot-title.pdf}
+\includegraphics[width=0.49\linewidth]{015-base-scaterplot-title.pdf}~
+\includegraphics[width=0.49\linewidth]{015-ggplot-scaterplot-title.pdf}
 \codel{
 \# base R\\
 plot(chi.kuk\$s.duration.ms, chi.kuk\$vowel.duration.ms,\\
@@ -201,12 +256,12 @@ chi.kuk \%>\% \\
 }
 \end{frame}
 \begin{frame}{scaterplot: подписи осей}
-\includegraphics[width=0.49\linewidth]{013-base-scaterplot-axes.pdf}~
-\includegraphics[width=0.49\linewidth]{013-ggplot-scaterplot-axes.pdf}
+\includegraphics[width=0.49\linewidth]{016-base-scaterplot-axes.pdf}~
+\includegraphics[width=0.49\linewidth]{016-ggplot-scaterplot-axes.pdf}
 \codel{
 \# base R\\
 plot(chi.kuk\$s.duration.ms, chi.kuk\$vowel.duration.ms,\\
-\ \ \ \alert{xlab = "длина [s]", ylab = "долгота гласного"})\bigskip\\
+\ \ \ \alert{xlab = "длина [s]"{}, ylab = "долгота гласного"})\bigskip\\
 \# dplyr, ggplot2\\
 chi.kuk \%>\% \\
 \ \ \ ggplot(aes(s.duration.ms, vowel.duration.ms)) +\\
@@ -216,7 +271,7 @@ chi.kuk \%>\% \\
 }
 \end{frame}
 \begin{frame}
-\includegraphics[width=\linewidth]{014-log-scales.png}
+\includegraphics[width=\linewidth]{017-log-scales.png}
 \end{frame}
 \begin{frame}{scaterplot: логарифмирование осей}
 Воспользуемся частотным словарем [Ляшевская, Шаров 2009] (топ-50000 лемм СЛРЯ) и посмотрим на параметр частоты слова (Freq.imp., среднее на миллион словоупотреблений).
@@ -232,13 +287,13 @@ freq \%>\% \\
 \ \ \ xlab("{}") +\\
 \ \ \ ylab("ipm") 
 \columnbreak\\
-\includegraphics[width=\linewidth]{015-log-scales.pdf}
+\includegraphics[width=\linewidth]{018-log-scales.pdf}
 }
 \end{multicols}
 \end{frame}
 \begin{frame}{scaterplot: логарифмирование осей}
-\includegraphics[width=0.49\linewidth]{016-base-scaterplot-log.pdf}~
-\includegraphics[width=0.49\linewidth]{016-ggplot-scaterplot-log.pdf}
+\includegraphics[width=0.49\linewidth]{019-base-scaterplot-log.pdf}~
+\includegraphics[width=0.49\linewidth]{019-ggplot-scaterplot-log.pdf}
 \codel{
 \# base R\\
 plot(1:52138, freq\$Freq.ipm.,\\
@@ -254,17 +309,538 @@ freq \%>\% \\
 \ \ \ \alert{scale\_y\_log10()} 
 }
 \end{frame}
-\subsection{колич+катег}
-\section{1 переменная}
-\subsection{количественная}
-\subsection{категориальная}
-\section{3 переменные}
-\subsection{колич+колич+колич}
+\begin{frame}{scaterplot: rug}
+\includegraphics[width=0.49\linewidth]{020-base-scaterplot-rug.pdf}~
+\includegraphics[width=0.49\linewidth]{020-ggplot-scaterplot-rug.pdf}
+\codel{
+\# base R\\
+plot(chi.kuk\$s.duration.ms, chi.kuk\$vowel.duration.ms)\\
+\alert{
+rug(chi.kuk\$s.duration.ms)\\
+rug(chi.kuk\$vowel.duration.ms, side = 2)}\bigskip\\
+\# dplyr, ggplot2\\
+chi.kuk \%>\% \\
+\ \ \ ggplot(aes(s.duration.ms, vowel.duration.ms)) +\\
+\ \ \ geom\_point() +\\
+\ \ \ \alert{geom\_rug()} \\
+}
+\end{frame}
+\begin{frame}{scaterplot: линии}
+\includegraphics[width=0.49\linewidth]{021-base-scaterplot-abline.pdf}~
+\includegraphics[width=0.49\linewidth]{021-ggplot-scaterplot-abline.pdf}
+\codel{
+\# base R\\
+plot(chi.kuk\$s.duration.ms, chi.kuk\$vowel.duration.ms)\\
+\alert{abline(h = 120, v = 60)}\bigskip\\
+\# dplyr, ggplot2\\
+chi.kuk \%>\% \\
+\ \ \ ggplot(aes(s.duration.ms, vowel.duration.ms)) +\\
+\ \ \ geom\_point() +\\
+\ \ \ \alert{geom\_hline(yintercept = 120)+\\
+\ \ \ geom\_vline(xintercept = 60)}\\
+}
+\end{frame}
+\begin{frame}{scaterplot: линии}
+\includegraphics[width=0.49\linewidth]{022-base-scaterplot-abline.pdf}~
+\includegraphics[width=0.49\linewidth]{022-ggplot-scaterplot-abline.pdf}
+\codel{
+\# base R\\
+plot(chi.kuk\$s.duration.ms, chi.kuk\$vowel.duration.ms)\\
+abline(h = 120, \alert{lty = 2})\\
+abline(v = 60, \alert{lwd = 5})\bigskip\\
+\# dplyr, ggplot2\\
+chi.kuk \%>\% \\
+\ \ \ ggplot(aes(s.duration.ms, vowel.duration.ms)) +\\
+\ \ \ geom\_point() +\\
+\ \ \ geom\_hline(yintercept = 120, \alert{linetype = 2})+\\
+\ \ \ geom\_vline(xintercept = 60, \alert{size = 5})\\
+}
+\end{frame}
+\begin{frame}{scaterplot: линии}
+\includegraphics[width=0.49\linewidth]{023-base-scaterplot-abline.pdf}~
+\includegraphics[width=0.49\linewidth]{023-ggplot-scaterplot-abline.pdf}
+\codel{
+\# base R\\
+plot(chi.kuk\$s.duration.ms, chi.kuk\$vowel.duration.ms)\\
+abline(h = 120, \alert{lty = 4})\\
+abline(v = 60, \alert{col = "blue"})\bigskip\\
+\# dplyr, ggplot2\\
+chi.kuk \%>\% \\
+\ \ \ ggplot(aes(s.duration.ms, vowel.duration.ms)) +\\
+\ \ \ geom\_point() +\\
+\ \ \ geom\_hline(yintercept = 120, \alert{linetype = 4})+\\
+\ \ \ geom\_vline(xintercept = 60, \alert{color = "blue"})\\
+}
+\end{frame}
+\subsection{barplot}
+\begin{frame}{barplot}
+\includegraphics[width=0.49\linewidth]{024-base-barplot.pdf}~
+\includegraphics[width=0.49\linewidth]{024-ggplot-barplot.pdf}
+\codel{
+\# base R\\
+barplot(chi.kuk\$age, names.arg = chi.kuk\$speaker)\bigskip\\
+\# dplyr, ggplot2\\
+chi.kuk \%>\% \\
+\ \ \ ggplot(aes(speaker, age)) +\\
+\ \ \ geom\_bar(\alert{stat = "identity"})\\
+}
+\end{frame}
+\begin{frame}{barplot: цвет}
+\includegraphics[width=0.49\linewidth]{025-base-barplot-color.pdf}~
+\includegraphics[width=0.49\linewidth]{025-ggplot-barplot-color.pdf}
+\codel{
+\# base R\\
+barplot(chi.kuk\$age, names.arg = chi.kuk\$speaker\\
+\ \ \ \alert{col = chi.kuk\$orientation})\bigskip\\
+\# dplyr, ggplot2\\
+chi.kuk \%>\% \\
+\ \ \ ggplot(aes(speaker, age, \alert{fill = orientation})) +\\
+\ \ \ geom\_bar(stat = "identity")\\
+}
+\end{frame}
+\begin{frame}{преобразование данных}
+Наши данные устроены достаточно неудобно:\\
+\codel{
+head(chi.kuk[c(1,6,7,9)], 3)\medskip\\
+\begin{tabular}{rrrrr}
+ & speaker & perceived.as.homo & perceived.as.hetero & orientation \\ 
+1 & A & 7 & 18 & hetero \\ 
+2 & B & 20 & 5 & hetero \\
+3 & C & 9 & 16 & homo \\ 
+\end{tabular}
+}
+В связи с этим мы создадим новый датафрейм \code{chi.kuk.2}:
+\codel{
+library(tidyr) \\
+chi.kuk \%>\% \\
+\ \ \ select(speaker, perceived.as.homo, perceived.as.hetero) \%>\%  \\
+\ \ \ gather(percieve, number, 2:3)  ->\\
+\ \ \ chi.kuk.2\\
+head(chi.kuk.2)\medskip\\
+\begin{tabular}{rrrr}
+ & speaker   &       percieve & number\\
+1  &     A & perceived.as.homo  &    7 \\
+2  &     B & perceived.as.homo   &  20 \\
+3   &    C & perceived.as.homo   &   9 \\
+\end{tabular}
+}
+\end{frame}
+\begin{frame}{barplot: цвет}
+\includegraphics[width=0.49\linewidth]{027-base-barplot-color.pdf}~
+\includegraphics[width=0.49\linewidth]{027-ggplot-barplot-color.pdf}
+\codel{
+\# base R\\
+barplot(chi.kuk.2\$number, names.arg = chi.kuk.2\$speaker\\
+\ \ \ \alert{col = c("blue"{}, "red")})\bigskip\\
+\# dplyr, ggplot2\\
+chi.kuk.2 \%>\% \\
+\ \ \ ggplot(aes(speaker, number, \alert{fill = percieve})) +\\
+\ \ \ geom\_bar(stat = "identity"{}, \alert{position = "dodge"})\\
+}
+\end{frame}
+\subsection{boxplot}
+\begin{frame}{boxplot}
+\includegraphics[width=0.49\linewidth]{028-base-boxplot.pdf}~
+\includegraphics[width=0.49\linewidth]{028-ggplot-boxplot.pdf}
+\codel{
+\# base R\\
+boxplot(chi.kuk\$s.duration.ms\textasciitilde chi.kuk\$orientation)\medskip\\
+\# dplyr, ggplot2\\
+chi.kuk \%>\% \\
+\ \ \ ggplot(aes(orientation, s.duration.ms)) +\\
+\ \ \ geom\_boxplot()
+}
+\end{frame}
+\begin{frame}{boxplot: наблюдения}
+\includegraphics[width=0.49\linewidth]{029-base-boxplot.pdf}~
+\includegraphics[width=0.49\linewidth]{029-ggplot-boxplot.pdf}
+\codel{
+\# base R\\
+boxplot(chi.kuk\$s.duration.ms\textasciitilde chi.kuk\$orientation)\\
+\alert{stripchart(chi.kuk\$s.duration.ms\textasciitilde chi.kuk\$orientation,\\
+\ \ \ pch = 1, vertical = T, add = T)} \medskip\\
+\# dplyr, ggplot2\\
+chi.kuk \%>\% \\
+\ \ \ ggplot(aes(orientation, s.duration.ms)) +\\
+\ \ \ geom\_boxplot() + \\
+\ \ \ \alert{geom\_point()}
+}
+\end{frame}
+\begin{frame}{boxplot: jitter}
+\includegraphics[width=0.49\linewidth]{030-base-boxplot.pdf}~
+\includegraphics[width=0.49\linewidth]{030-ggplot-boxplot.pdf}
+\codel{
+\# base R\\
+boxplot(chi.kuk\$s.duration.ms\textasciitilde chi.kuk\$orientation)\\
+stripchart(chi.kuk\$s.duration.ms\textasciitilde chi.kuk\$orientation,\\
+\ \ \ pch = 1, vertical = T, add = T, \alert{method = "jitter"}) \medskip\\
+\# dplyr, ggplot2\\
+chi.kuk \%>\% \\
+\ \ \ ggplot(aes(orientation, s.duration.ms)) +\\
+\ \ \ geom\_boxplot() + \\
+\ \ \ \alert{geom\_jitter()}
+}
+\end{frame}
+\begin{frame}{boxplot: violin}
+\hfill
+\includegraphics[width=0.49\linewidth]{031-ggplot-boxplot.pdf}\\
+В base R есть пакет \code{vioplot}, но он плохо сделан.
+\codel{
+\# dplyr, ggplot2\\
+chi.kuk \%>\% \\
+\ \ \ ggplot(aes(orientation, s.duration.ms)) +\\
+\ \ \ \alert{geom\_violin() +}\\
+\ \ \ geom\_point()
+}
+\end{frame}
+\subsection{contourplot}
+\begin{frame}{адыгейские гласные}
+Для следующих графиков будет использован датасет, состоящий из данных по 7 гласным кабардинского языка, собранных от одного носителя. Анализировалось анкета в 210 слов, каждое слово произносилось 3 раза изолированно, а четвертый раз в предложении. Сбор и разметка осуществлялись Соней Сиговой.
+\codel{
+adyghe <- read.csv("https://goo.gl/rYZPIj"{},  sep = "\textbackslash t")}
+\includegraphics[width=0.49\linewidth]{032-base-adyghe.pdf}~
+\includegraphics[width=0.49\linewidth]{032-ggplot-adyghe.pdf}
+\end{frame}
+\begin{frame}{countourplot}
+\includegraphics[width=0.49\linewidth]{033-base-countourplot.pdf}~
+\includegraphics[width=0.49\linewidth]{033-ggplot-countourplot.pdf}
+\codel{
+\# base R, MASS\\
+\alert{library(MASS)}\\
+z <- kde2d(adyghe\$F1, adyghe\$F2, n = 50) \hfill \# 2D kernel density estimation\\
+\alert{contour(z, nlevels = 9,}\\
+\ \ \ xlim = rev(range(adyghe\$F2)), \hfill \# переворот осей\\
+\ \ \ ylim = rev(range(adyghe\$F1))) \hfill \# переворот осей \medskip\\
+\# dplyr, ggplot2\\
+adyghe\%>\% \\
+ggplot(aes(F2, F1)) + \\
+\ \ \ \alert{geom\_density\_2d() +} \\
+\ \ \   scale\_y\_reverse() + \hfill \# переворот осей\\
+\ \ \  scale\_x\_reverse() \hfill \# переворот осей\\
+}
+\end{frame}
+\begin{frame}{countourplot}
+\includegraphics[width=0.49\linewidth]{033-base-countourplot.pdf}~
+\includegraphics[width=0.49\linewidth]{034-ggplot-countourplot.pdf}
+\codel{
+\# base R, MASS\\
+library(MASS)\\
+z <- kde2d(adyghe\$F1, adyghe\$F2, n = 50) \hfill \# 2D kernel density estimation\\
+contour(z, nlevels = 9,\\
+\ \ \ xlim = rev(range(adyghe\$F2)), \hfill \# переворот осей\\
+\ \ \ ylim = rev(range(adyghe\$F1))) \hfill \# переворот осей \medskip\\
+\# dplyr, ggplot2\\
+adyghe\%>\% \\
+ggplot(aes(F2, F1, \alert{color = vowel})) + \\
+\ \ \ geom\_density\_2d() + \\
+\ \ \   scale\_y\_reverse() + \hfill \# переворот осей\\
+\ \ \  scale\_x\_reverse() \hfill \# переворот осей\\
+}
+\end{frame}
+\begin{frame}{Итоги: декартова система координат}
+\hspace{0.6cm} две числовые переменные \hfill две номинативные пер.\\
+\includegraphics[width=0.49\linewidth]{035-ggplot-num-num.pdf}~
+\includegraphics[width=0.49\linewidth]{035-ggplot-nom-nom.pdf}\\
+номинативная переменная и число \hfill номинативная и числовая пер.\\ 
+\includegraphics[width=0.49\linewidth]{035-ggplot-num-numb.pdf}~
+\includegraphics[width=0.49\linewidth]{035-ggplot-num-nom.pdf}\\
+\end{frame}
+\section{распределение}
+\subsection{плотность}
+\begin{frame}{плотность}
+\includegraphics[width=0.49\linewidth]{036-base-density.pdf}~
+\includegraphics[width=0.49\linewidth]{036-ggplot-density.pdf}
+\codel{
+\# base R\\
+plot(density(chi.kuk\$vowel.duration.ms), main = "{}")\medskip\\
+\# dplyr, ggplot2\\
+chi.kuk \%>\% \\
+\ \ \ ggplot(aes(vowel.duration.ms)) +\\
+\ \ \ geom\_density()
+}
+\end{frame}
 
+\begin{frame}{плотность: заполнение}
+\includegraphics[width=0.49\linewidth]{037-base-density.pdf}~
+\includegraphics[width=0.49\linewidth]{037-ggplot-density.pdf}
+\codel{
+\# base R\\
+plot(density(chi.kuk\$vowel.duration.ms), main = "{}")\\
+\alert{polygon(density(chi.kuk\$vowel.duration.ms), col = "lightblue")}\medskip\\
+\# dplyr, ggplot2\\
+chi.kuk \%>\% \\
+\ \ \ ggplot(aes(vowel.duration.ms)) +\\
+\ \ \ geom\_density(\alert{fill = "lightblue"})
+}
+\end{frame}
+\begin{frame}{плотность: сравнение групп}
+\includegraphics[width=0.49\linewidth]{038-base-density.pdf}~
+\includegraphics[width=0.49\linewidth]{038-ggplot-density.pdf}
+\codel{
+\# base R, sm\\
+\alert{library(sm)}\\
+\alert{sm.density.compare}(chi.kuk\$vowel.duration.ms, chi.kuk\$orientation) \medskip\\
+\# dplyr, ggplot2\\
+chi.kuk \%>\% \\
+\ \ \ ggplot(aes(vowel.duration.ms, \alert{color = orientation})) +\\
+\ \ \ geom\_density()
+}
+\end{frame}
+
+\begin{frame}{плотность: сравнение групп}
+\includegraphics[width=0.49\linewidth]{038-base-density.pdf}~
+\includegraphics[width=0.49\linewidth]{039-ggplot-density.pdf}
+\codel{
+\# base R, sm\\
+\alert{library(sm)}\\
+\alert{sm.density.compare}(chi.kuk\$vowel.duration.ms, chi.kuk\$orientation) \medskip\\
+\# dplyr, ggplot2\\
+chi.kuk \%>\% \\
+\ \ \ ggplot(aes(vowel.duration.ms, \alert{fill = orientation, alpha = 0.4})) +\\
+\ \ \ geom\_density()
+}
+\end{frame}
+
+\subsection{гистограмма}
+\begin{frame}{гистограмма}
+\includegraphics[width=0.49\linewidth]{040-base-density.pdf}~
+\includegraphics[width=0.49\linewidth]{040-ggplot-density.pdf}
+\codel{
+\# base R\\
+\alert{hist}(adyghe\$F1) \medskip\\
+\# dplyr, ggplot2\\
+adyghe \%>\% \\
+\ \ \ ggplot(aes(F1)) +\\
+\ \ \ \alert{geom\_histogram}()
+}
+\end{frame}
+\begin{frame}[fragile]{гистограмма: количество ячеек}
+В википедии \href{https://en.wikipedia.org/wiki/Histogram#Number_of_bins_and_width}{\alert{предложено}} несколько способов выбора количества ячеек гистограммы. В R реализовано несколько из них:
+\codel{
+nclass.Sturges(adyghe\$F1) \hfill \# по умолчанию в R base [Sturgers 1926] \\
+nclass.scott(adyghe\$F1) \hfill \# [Scott 1979] \\
+nclass.FD(adyghe\$F1)  \hfill \# [Freedman, Diaconis 1981] \\
+30 \hfill \# по умолчанию в ggplot2
+}
+\end{frame}
+\begin{frame}{гистограмма: количество ячеек}
+\includegraphics[width=0.49\linewidth]{042-base-density.pdf}~
+\includegraphics[width=0.49\linewidth]{042-ggplot-density.pdf}
+\codel{
+\# base R\\
+hist(adyghe\$F1, \alert{breaks = nclass.FD(adyghe\$F1)}) \\
+\# Аргумент \alert{breaks} почему-то работает некорректно\medskip\\
+\# dplyr, ggplot2\\
+adyghe \%>\% \\
+\ \ \ ggplot(aes(F1)) +\\
+\ \ \ geom\_histogram(\alert{bins = nclass.FD(adyghe\$F1)})
+}
+\end{frame}
+\begin{frame}{гистограмма: цвет}
+\includegraphics[width=0.49\linewidth]{043-base-density.pdf}~
+\includegraphics[width=0.49\linewidth]{043-ggplot-density.pdf}
+\codel{
+\# base R\\
+hist(adyghe\$F1, \alert{col = "lightblue"}) \medskip\\
+\# dplyr, ggplot2\\
+adyghe \%>\% \\
+\ \ \ ggplot(aes(F1)) +\\
+\ \ \ geom\_histogram(\alert{fill = "lightblue"})
+}
+\end{frame}
 \section{фасетизация}
+\begin{frame}{Фасетизация}
+\vspace{-5mm}
+\begin{center}
+\includegraphics[width=0.7\linewidth]{044-facet.pdf}
+\end{center}
+\vspace{-5mm}
+\codel{
+chi.kuk \%>\% \\
+\ \ \  ggplot(aes(s.duration.ms, vowel.duration.ms, color = orientation)) + \\
+\ \ \  geom\_point() +\\
+\ \ \  \alert{facet\_wrap(\textasciitilde orientation)}}
+\end{frame}
+\begin{frame}{Фасетизация: с данными на фоне}
+\vspace{-5mm}
+\begin{center}
+\includegraphics[width=0.7\linewidth]{045-facet.pdf}
+\end{center}
+\codel{
+\alert{adyghe2 <- adyghe[,-1] \hfill создаем датафрейм без переменной vowel} \\
+adyghe \%>\%  \\
+\ \ \  ggplot(aes(F1, fill = vowel))+ \\
+\ \ \  \alert{geom\_histogram(data = adyghe2, fill = "lightgrey") + \hfill \#  adyghe2}\\
+\ \ \  geom\_histogram() + \hfill \# а поверх adyghe\\
+\ \  \  \alert{facet\_wrap(\textasciitilde vowel, nrow = 2)} + \\
+\ \ \  guides(fill = FALSE) + \hfill  \# убирает легенду\\
+\ \ \  theme\_bw() \hfill  \# черно-белая тема \\}
+\end{frame}
+
+\begin{frame}{Фасетизация: с данными на фоне}
+\vspace{-5mm}
+\begin{center}
+\includegraphics[width=0.7\linewidth]{046-facet.pdf}
+\end{center}
+\codel{
+\alert{chi.kuk2 <- chi.kuk[, -9] \hfill \# создаем датафрейм без перемен. orientation}\\
+chi.kuk \%>\% \\
+\ \ \  ggplot(aes(s.duration.ms, vowel.duration.ms, color = orientation)) + \\
+\ \ \  \alert{geom\_point(data = chi.kuk2, color = "lightgrey") + \hfill \# chi.kuk2} \\
+\ \ \  geom\_point() +\hfill  \# и добавляем поверх данные из chi.kuk \\
+\ \ \   theme\_bw() + \hfill  \# черно-белая тема \\
+\ \ \  \alert{facet\_wrap(\textasciitilde orientation)}
+}
+\end{frame}
+
+\begin{frame}{Фасетизация}
+\vspace{-5mm}
+\begin{center}
+\includegraphics[width=0.95\linewidth]{047-facet.pdf}
+\end{center}
+\vspace{-5mm}
+\codel{
+chi.kuk \%>\% \\
+\ \ \  ggplot(aes(s.duration.ms, vowel.duration.ms)) +\\
+\ \ \  geom\_point() + \\
+\ \ \  \alert{facet\_grid(orientation\textasciitilde mean.homo)}
+}
+\end{frame}
+\section{анимация}
+\begin{frame}[fragile]{Анимация: base R}
+\scriptsize
+\begin{alltt}
+library(animation)
+
+plot_frame1 <- function(n) \{
+plot(n, n,
+     col = n, \hfill # цвет
+     pch = 20, \hfill  # тип
+     cex = 10 - n, \hfill  # размер
+     xlim = c(0, 10),
+     ylim = c(0, 10),
+     xlab = NA,
+     ylab = NA)
+\}
+
+saveGIF(
+# команда lapply применяет к функции значения
+# первого аргумента и возвращает некоторый список
+  lapply(1:10, function(i) \{
+    plot_frame1(i)
+  \}),
+  interval = 0.5, # время между слайдами
+  ani.width = 800,
+  ani.heigth = 600,
+  movie.name = 'myanim.gif')
+\end{alltt}
+\normalsize
+\end{frame}
+\begin{frame}{Анимация: ggplot2, gganimation}
+\codel{
+devtools::install\_github("dgrtwo/gganimate") \hfill \# установка из github\\
+library(gganimate) \\
+df <- data.frame(n = 1:10) \hfill создаем датафрейм \\
+df \%>\% \\
+\ \ \  ggplot(aes(n, n, \\
+\ \ \ \ \ \  size = n, \hfill \# размер\\
+\ \ \ \ \ \  color = factor(n), \hfill \# цвет\\
+\ \ \ \ \ \  \alert{frame = n})) + \hfill \# параметр, по которому анимировать\\
+\ \ \ \ \ \  geom\_point() -> \\
+\ \ \  p \hfill \# записывает график в переменную \medskip\\
+  gg\_animate(p) \medskip\\
+  gg\_animate(p, "output.gif") \\
+gg\_animate(p, "output.mp4") \\
+gg\_animate(p, "output.swf") \\
+gg\_animate(p, "output.html")
+}
+\end{frame}
+\section{markdown}
+\begin{frame}[fragile]{R Markdown}
+R Markdown позволяет создавать документы, содержащие отчет или презентацию с прямым вызовом функций R и его выдачей.
+\begin{itemize}
+\mytem Инсталяция: \scriptsize {\color{red!13!blue}{\verb'install.packages("rmarkdown")'}} \normalsize
+\mytem жанры: документ, презентация
+\mytem доступные форматы: html, pdf (если стоит TeX), docx
+\mytem доступно легкое форматирование
+\end{itemize}
+\begin{multicols}{2}
+\small
+\begin{itemize}
+\mytem \scriptsize {\color{red!13!blue}{\verb"*италик*"}} \normalsize
+\mytem \scriptsize {\color{red!13!blue}{\verb"_италик_"}} \normalsize
+\mytem \scriptsize {\color{red!13!blue}{\verb"**жирный**"}} \normalsize
+\mytem \scriptsize {\color{red!13!blue}{\verb"__жирный__"}} \normalsize
+\mytem \scriptsize {\color{red!13!blue}{\verb"^надписное^"}} \normalsize
+\mytem \scriptsize {\color{red!13!blue}{\verb"~~перечеркнутое~~"}} \normalsize
+\mytem \scriptsize {\color{red!13!blue}{\verb"# 1. Заголовок"}} \normalsize
+\mytem \scriptsize {\color{red!13!blue}{\verb"## 1.2 Подзаголовок"}} \normalsize
+\mytem \LaTeX : \scriptsize {\color{red!13!blue}{\verb"$\frac{4}{3}$"}} \normalsize
+\mytem Горизонтальная линия: \scriptsize {\color{red!13!blue}{\verb"***"}} \normalsize
+\mytem \scriptsize {\color{red!13!blue}{\verb"> отдельный блок"}}
+\mytem \scriptsize {\color{red!13!blue}{\verb"* булет"}}
+\mytem \scriptsize {\color{red!13!blue}{\verb"+ подбулет"}}
+\end{itemize}
+\normalsize
+\end{multicols}
+\end{frame}
+\begin{frame}[fragile]{R Markdown: оформление кода}
+\begin{multicols}{2}
+\begin{itemize}
+\mytem код и результат
+\scriptsize 
+\begin{alltt}
+{\color{red!13!blue}{```\{r\}}}
+plot(99:22)
+{\color{red!13!blue}{```}}
+\end{alltt}
+\normalsize
+\mytem только код
+\scriptsize 
+\begin{alltt}
+{\color{red!13!blue}{```\{r eval = FALSE\}}}
+plot(99:22)
+{\color{red!13!blue}{```}}
+\end{alltt}
+\normalsize
+\mytem только результат
+\scriptsize 
+\begin{alltt}
+{\color{red!13!blue}{```\{r echo = FALSE\}}}
+plot(99:22)
+{\color{red!13!blue}{```}}
+\end{alltt}
+\normalsize
+\columnbreak
+\mytem в тексте
+\tiny 
+\begin{alltt}
+\$5 \textbackslash choose 7\$ будет {\color{red!13!blue}{`r choose(7, 5)`}}
+\end{alltt}
+$5 \choose 7$ будет 21
+\normalsize
+\mytem без предупреждений
+\scriptsize 
+\begin{alltt}
+{\color{red!13!blue}{```\{r warning = FALSE\}}}
+plot(99:22)
+{\color{red!13!blue}{```}}
+\end{alltt}
+\normalsize
+\mytem без сообщений
+\scriptsize 
+\begin{alltt}
+{\color{red!13!blue}{```\{r message = FALSE\}}}
+plot(99:22)
+{\color{red!13!blue}{```}}
+\end{alltt}
+\normalsize
+\end{itemize}
+\end{multicols}
+\end{frame}
 \section{}
 \begin{frame}
-{\huge Спасибо что долистали!\bigskip\\
+{\huge Спасибо за внимание!\bigskip\\
 \normalsize Пишите письма\\
 agricolamz@gmail.com
 \vspace{-130pt}}
