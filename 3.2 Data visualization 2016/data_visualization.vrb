@@ -1,0 +1,53 @@
+\frametitle{R Markdown: оформление кода}
+\begin{multicols}{2}
+\begin{itemize}
+\mytem код и результат
+\scriptsize
+\begin{alltt}
+{\color{red!13!blue}{```\{r\}}}
+plot(99:22)
+{\color{red!13!blue}{```}}
+\end{alltt}
+\normalsize
+\mytem только код
+\scriptsize
+\begin{alltt}
+{\color{red!13!blue}{```\{r eval = FALSE\}}}
+plot(99:22)
+{\color{red!13!blue}{```}}
+\end{alltt}
+\normalsize
+\mytem только результат
+\scriptsize
+\begin{alltt}
+{\color{red!13!blue}{```\{r echo = FALSE\}}}
+plot(99:22)
+{\color{red!13!blue}{```}}
+\end{alltt}
+\normalsize
+\columnbreak
+\mytem в тексте
+\tiny
+\begin{alltt}
+\$5 \textbackslash choose 7\$ будет {\color{red!13!blue}{`r choose(7, 5)`}}
+\end{alltt}
+$5 \choose 7$ будет 21
+\normalsize
+\mytem без предупреждений
+\scriptsize
+\begin{alltt}
+{\color{red!13!blue}{```\{r warning = FALSE\}}}
+plot(99:22)
+{\color{red!13!blue}{```}}
+\end{alltt}
+\normalsize
+\mytem без сообщений
+\scriptsize
+\begin{alltt}
+{\color{red!13!blue}{```\{r message = FALSE\}}}
+plot(99:22)
+{\color{red!13!blue}{```}}
+\end{alltt}
+\normalsize
+\end{itemize}
+\end{multicols}

@@ -193,7 +193,7 @@ chi.kuk \%>\% \\
 \codel{
 \# base R\\
 plot(chi.kuk\$s.duration.ms, chi.kuk\$vowel.duration.ms,\\
-\ \ \ \alert{col = c("red"{}, "blue")[chi.kuk\$orientation]})\bigskip\\
+\ \ \ \alert{col = c("red"{}, "blue")[chi.kuk\$orientation])})\bigskip\\
 \# dplyr, ggplot2\\
 chi.kuk \%>\% \\
 \ \ \ ggplot(aes(s.duration.ms, vowel.duration.ms, \alert{color = orientation})) +\\
@@ -206,7 +206,7 @@ chi.kuk \%>\% \\
 \codel{
 \# base R\\
 plot(chi.kuk\$s.duration.ms, chi.kuk\$vowel.duration.ms,\\
-\ \ \ \alert{pch = c(16, 17)[chi.kuk\$orientation]})\bigskip\\
+\ \ \ \alert{pch = c(16, 17)[chi.kuk\$orientation])})\bigskip\\
 \# dplyr, ggplot2\\
 chi.kuk \%>\% \\
 \ \ \ ggplot(aes(s.duration.ms, vowel.duration.ms, \alert{shape = orientation})) +\\

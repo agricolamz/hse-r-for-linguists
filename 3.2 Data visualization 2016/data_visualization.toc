@@ -1,0 +1,14 @@
+\beamer@endinputifotherversion {3.24pt}
+\select@language {russian}
+\beamer@sectionintoc {1}{введение}{2}{0}{1}
+\beamer@sectionintoc {2}{2 переменные}{10}{0}{2}
+\beamer@subsectionintoc {2}{1}{scaterplot}{10}{0}{2}
+\beamer@subsectionintoc {2}{2}{barplot}{24}{0}{2}
+\beamer@subsectionintoc {2}{3}{boxplot}{28}{0}{2}
+\beamer@subsectionintoc {2}{4}{contourplot}{32}{0}{2}
+\beamer@sectionintoc {3}{распределение}{36}{0}{3}
+\beamer@subsectionintoc {3}{1}{плотность}{36}{0}{3}
+\beamer@subsectionintoc {3}{2}{гистограмма}{40}{0}{3}
+\beamer@sectionintoc {4}{фасетизация}{44}{0}{4}
+\beamer@sectionintoc {5}{анимация}{48}{0}{5}
+\beamer@sectionintoc {6}{markdown}{50}{0}{6}
