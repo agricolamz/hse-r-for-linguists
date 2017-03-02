@@ -85,10 +85,10 @@ ChurchSlavonic & 100 & 100 & 100\\
 \scriptsize
 \begin{alltt}
 df <- data.frame(\\
-~~~~order = c("SVO", "SOV", "SVO", "VOS"),\\
-~~~~gender = c("3", "0", "0", "0"),\\
-~~~~future = c("non.inflect", "inflect", "non.inflect", "non.inflect"),\\
-~~~~row.names = c("English", "Turkish", "Estonian", "Malagasy"))\\
+~~~~order = c("SVO"{}, "SOV"{}, "SVO"{}, "VOS"),\\
+~~~~gender = c("3"{}, "0"{}, "0"{}, "0"),\\
+~~~~future = c("non.inflect"{}, "inflect"{}, "non.inflect"{}, "non.inflect"),\\
+~~~~row.names = c("English"{}, "Turkish"{}, "Estonian"{}, "Malagasy"))\\
 df\\
 \alert{
 \begin{tabular}{lrrr}
@@ -125,7 +125,7 @@ Malagasy & 0 & 0 & 1 & 0 & 1 \\
 \scriptsize\verb"cluster"\normalsize. Вот пример на основе данных по количеству согласных и наличию абруптивных (\alert{\href{http://web-corpora.net/~agricolamz/2016HSER/correlation_regressions_ejectives.html}{график}}):\\
 \scriptsize
 \begin{alltt}
-df <- read.csv("http://goo.gl/919qoS", row.names = 1)\\
+df <- read.csv("http://goo.gl/919qoS"{}, row.names = 1)\\
 df <- df[sample(1:27, 5),] \hfill \# выборка из данных\medskip\\
 \alert{library(cluster)}\\
 dm <- \alert{daisy(}df\alert{)}; dm \hfill \# строит матрицу и вызывает ее \medskip\\
